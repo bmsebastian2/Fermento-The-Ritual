@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Bubbles } from "@/components/hero/bubbles";
+import { NicaraguaSilhouette } from "@/components/hero/nicaragua-silhouette";
+import { PalmFrond } from "@/components/hero/palm-frond";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +14,18 @@ export function Hero() {
       id="inicio"
       className="relative isolate overflow-hidden px-6 pt-28 pb-16 md:pt-32 lg:pb-24"
     >
+      {/* Silueta de Nicaragua — marca de agua de identidad, detrás del producto,
+          sangrando por el borde inferior-derecho. Trazo fino, muy sutil. */}
+      <NicaraguaSilhouette
+        className="pointer-events-none absolute -z-10 opacity-[0.12] hidden lg:block"
+        style={{
+          right: "0.5%",
+          top: "-8%",
+          width: "min(40rem, 44%)",
+          transform: "rotate(-6deg)",
+        }}
+      />
+
       <Bubbles />
 
       <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
@@ -75,18 +89,39 @@ export function Hero() {
           className="hero-in relative mx-auto w-full max-w-sm lg:max-w-md"
           style={{ animationDelay: "260ms" }}
         >
-          {/* Halo de acento coco detrás de la botella */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 translate-y-6 scale-90 rounded-full blur-3xl"
+          {/* Frondas de palma — capa de profundidad botánica, abren desde las
+              esquinas superiores por detrás de la botella (lenguaje de marca). */}
+          <PalmFrond
+            className="pointer-events-none absolute -z-10 text-forest/25"
             style={{
-              background:
-                "radial-gradient(circle, color-mix(in srgb, var(--color-coco) 45%, transparent), transparent 70%)",
+              top: "-11%",
+              left: "-20%",
+              width: "58%",
+              transform: "rotate(-18deg)",
             }}
           />
-          <div className="overflow-hidden rounded-[4px] shadow-2xl shadow-forest-deep/25 ring-1 ring-forest/10">
+          <PalmFrond
+            className="pointer-events-none absolute -z-10 text-coco/40"
+            style={{
+              top: "-15%",
+              right: "-18%",
+              width: "50%",
+              transform: "scaleX(-1) rotate(-14deg)",
+            }}
+          />
+
+          {/* Botella: leve rotación + sombra con dirección de luz (arriba-izq →
+              proyecta abajo-der), en capas para dar volumen real. */}
+          <div
+            className="overflow-hidden rounded-[4px]"
+            style={{
+              transform: "rotate(-2deg)",
+              boxShadow:
+                "26px 36px 64px -20px color-mix(in srgb, var(--color-forest-deep) 42%, transparent), 10px 14px 26px -10px color-mix(in srgb, var(--color-forest-deep) 30%, transparent)",
+            }}
+          >
             <Image
-              src="/products/agua-de-coco.jpg"
+              src="/products/agua-de-coco.webp"
               alt="Lata de Agua de Coco The Ritual sobre madera, con cocos frescos"
               width={582}
               height={838}
@@ -94,6 +129,19 @@ export function Hero() {
               className="h-auto w-full object-cover"
             />
           </div>
+
+          {/* Sombra de contacto: apoya la botella sobre una superficie y
+              elimina la sensación de flotar contra la crema. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-8 -z-10 h-6 rounded-[100%] blur-xl"
+            style={{
+              bottom: "2.75rem",
+              background:
+                "color-mix(in srgb, var(--color-forest-deep) 50%, transparent)",
+            }}
+          />
+
           <div className="mt-3 flex items-center justify-between">
             <Badge color="var(--color-coco)">The Ritual · Agua de Coco</Badge>
             <Badge color="var(--color-ink)" className="opacity-60">

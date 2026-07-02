@@ -1,4 +1,4 @@
-import type { Accent } from "@/lib/data/products";
+import type { Accent, Product } from "@/lib/data/products";
 
 /** Datos de contacto y navegación del sitio. */
 
@@ -22,4 +22,13 @@ export const navLinks: { href: string; label: string }[] = [
 /** Devuelve el valor CSS del acento de un producto (var de globals.css). */
 export function accentVar(accent: Accent): string {
   return `var(--color-${accent})`;
+}
+
+/**
+ * Ruta de la imagen (WebP) de un producto. Usa `image` si está definido;
+ * si no, deriva por convención `/products/<id>.webp`. Todas las imágenes
+ * viven en public/products como WebP optimizado.
+ */
+export function productImage(product: Pick<Product, "id" | "image">): string {
+  return product.image ?? `/products/${product.id}.webp`;
 }

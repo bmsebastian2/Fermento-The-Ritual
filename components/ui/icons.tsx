@@ -29,3 +29,20 @@ export function ArrowDownIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
+export function ArrowUpIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 19V5M6 11l6-6 6 6" />
+    </svg>
+  );
+}

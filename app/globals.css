@@ -78,6 +78,16 @@ body {
   }
 }
 
+/* Detalle de producto — backdrop del <dialog> nativo (fade). */
+dialog::backdrop {
+  background-color: color-mix(in srgb, var(--color-forest-deep) 60%, transparent);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+dialog[data-visible="true"]::backdrop {
+  opacity: 1;
+}
+
 /* Motion con propósito — respetar preferencia del sistema. */
 @media (prefers-reduced-motion: reduce) {
   *,

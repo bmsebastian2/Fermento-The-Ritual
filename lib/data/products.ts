@@ -4,8 +4,10 @@
  *
  * PRECIOS: ninguno confirmado todavía → `price: null` con `// TODO: precio real`.
  *          No inventar montos.
- * IMÁGENES: solo Agua de Coco tiene render limpio. El resto usa `image: null`
- *           (la card cae a placeholder por color) hasta tener fotos recortadas.
+ * IMÁGENES: cada producto tiene su imagen WebP en public/products/<id>.webp
+ *           (derivada por `productImage()` en lib/site.ts). Por ahora son las
+ *           láminas de producto optimizadas; reemplazar por fotos limpias cuando
+ *           las haya. `image` sirve solo para override puntual (normalmente null).
  * ACENTO:   cada producto referencia un token de color de globals.css
  *           (var(--color-<accent>)). No mezclar acentos fuera de su card.
  */
@@ -280,7 +282,7 @@ export const products: Product[] = [
     notes: ["Hidratación pura", "Electrolitos naturales", "Sin azúcar añadida"],
     badges: ["100% NATURAL", "SIN AZÚCAR AÑADIDA"],
     accent: "coco",
-    image: "/products/agua-de-coco.jpg",
+    image: null,
     price: null, // TODO: precio real
   },
 
