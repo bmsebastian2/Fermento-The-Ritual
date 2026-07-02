@@ -2,11 +2,22 @@ import Image from "next/image";
 import { Bubbles } from "@/components/hero/bubbles";
 import { NicaraguaSilhouette } from "@/components/hero/nicaragua-silhouette";
 import { PalmFrond } from "@/components/hero/palm-frond";
+import { ProductCallouts, type Callout } from "@/components/hero/product-callouts";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WhatsAppIcon, ArrowDownIcon } from "@/components/ui/icons";
 import { whatsappUrl, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/site";
+
+// Virtudes del Agua de Coco — copy respaldado por la lámina de producto
+// (productos_fermento_the_ritual.md): "100% natural, sin aditivos ni azúcar
+// añadida. Orgánica". Anclas en % sobre la lata; se afinan visualmente.
+const COCO_CALLOUTS: Callout[] = [
+  { label: "100% Natural", anchor: { x: 35, y: 33 }, tip: { x: 12, y: 27 }, side: "left" },
+  { label: "Orgánica", anchor: { x: 37, y: 63 }, tip: { x: 12, y: 71 }, side: "left" },
+  { label: "Sin aditivos", anchor: { x: 65, y: 40 }, tip: { x: 88, y: 33 }, side: "right" },
+  { label: "Sin azúcar añadida", anchor: { x: 63, y: 66 }, tip: { x: 88, y: 73 }, side: "right" },
+];
 
 export function Hero() {
   return (
@@ -17,12 +28,12 @@ export function Hero() {
       {/* Silueta de Nicaragua — marca de agua de identidad, detrás del producto,
           sangrando por el borde inferior-derecho. Trazo fino, muy sutil. */}
       <NicaraguaSilhouette
-        className="pointer-events-none absolute -z-10 opacity-[0.12] hidden lg:block"
+        className="pointer-events-none absolute -z-10 opacity-[0.2] hidden lg:block"
         style={{
-          right: "0.5%",
-          top: "-8%",
-          width: "min(40rem, 44%)",
-          transform: "rotate(-6deg)",
+          left: "50%",
+          top: "50%",
+          width: "min(48rem, 56%)",
+          transform: "translate(-50%, -48%) rotate(-4deg)",
         }}
       />
 
@@ -111,24 +122,31 @@ export function Hero() {
           />
 
           {/* Botella: leve rotación + sombra con dirección de luz (arriba-izq →
-              proyecta abajo-der), en capas para dar volumen real. */}
-          <div
-            className="overflow-hidden rounded-[4px]"
-            style={{
-              transform: "rotate(-2deg)",
-              boxShadow:
-                "26px 36px 64px -20px color-mix(in srgb, var(--color-forest-deep) 42%, transparent), 10px 14px 26px -10px color-mix(in srgb, var(--color-forest-deep) 30%, transparent)",
-            }}
+              proyecta abajo-der), en capas para dar volumen real. Al hacer
+              hover/tap aparecen leader lines con las virtudes del producto. */}
+          <ProductCallouts
+            accent="var(--color-coco)"
+            toggleLabel="Mostrar las propiedades del Agua de Coco"
+            callouts={COCO_CALLOUTS}
           >
-            <Image
-              src="/products/agua-de-coco.webp"
-              alt="Lata de Agua de Coco The Ritual sobre madera, con cocos frescos"
-              width={582}
-              height={838}
-              priority
-              className="h-auto w-full object-cover"
-            />
-          </div>
+            <div
+              className="overflow-hidden rounded-[4px]"
+              style={{
+                transform: "rotate(-2deg)",
+                boxShadow:
+                  "26px 36px 64px -20px color-mix(in srgb, var(--color-forest-deep) 42%, transparent), 10px 14px 26px -10px color-mix(in srgb, var(--color-forest-deep) 30%, transparent)",
+              }}
+            >
+              <Image
+                src="/products/agua-de-coco.webp"
+                alt="Lata de Agua de Coco The Ritual sobre madera, con cocos frescos"
+                width={582}
+                height={838}
+                priority
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          </ProductCallouts>
 
           {/* Sombra de contacto: apoya la botella sobre una superficie y
               elimina la sensación de flotar contra la crema. */}

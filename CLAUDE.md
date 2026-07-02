@@ -67,10 +67,16 @@ Componentes chicos y con un solo propósito. No mezclar lógica de datos con pre
 
 ## Flujo de trabajo
 
-1. **Fase 1 — análisis**: antes de escribir código, describir el plan (estructura de la sección, componentes a crear/tocar) y esperar confirmación si el cambio es grande (una sección nueva, un rediseño). Cambios chicos (ajustar spacing, texto, un color) se pueden hacer directo.
-2. **Fase 2 — implementación**: cambios en diffs, un archivo a la vez cuando el cambio toca varios componentes.
-3. No agregar dependencias nuevas sin consultar.
-4. No mezclar cambios visuales con cambios de lógica/datos en el mismo paso.
+**Fase 1 — Análisis**: antes de escribir código, solo analizar. Encontrar el archivo, la línea y la causa del problema (o el punto donde iría lo nuevo). Mostrar snippets relevantes, no archivos completos. Nada de código todavía — esperar confirmación explícita antes de seguir. Hallazgos en lista breve (archivo, línea, causa), sin párrafos largos. Excepción: en tareas complejas (arquitectura, seguridad, pagos) el análisis puede ser más profundo aunque rompa la concisión, ahí el detalle previene errores caros.
+
+**Fase 2 — Implementación**: solo tras aprobación explícita. Mostrar diff, no el archivo completo. Máximo 2 líneas de explicación. Sin resúmenes finales salvo que se pidan.
+
+**Reglas:**
+- Un archivo por mensaje — si el cambio toca varios componentes, se hacen de a uno.
+- No agregar dependencias nuevas sin consultar.
+- No mezclar cambios visuales con cambios de lógica/datos en el mismo paso.
+- Consultar antes de asumir cualquier decisión no especificada (diseño, arquitectura, nombres, estados) — no adivinar.
+- Cambios de UI/diseño: invocar el skill `frontend-design` y mantener el sistema de diseño ya establecido (paleta, tipografía, tokens) sin alterarlo.
 
 ## Datos pendientes (no inventar)
 
