@@ -20,7 +20,7 @@ export function ProductModal({
   const orderMessage = `¡Hola Fermento! Quiero pedir ${product.name} (${product.size}) 🌱`;
 
   return (
-    <div className="relative flex max-h-[92vh] flex-col overflow-y-auto sm:max-h-[85vh]">
+    <div className="relative flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[85vh]">
       {/* Barra de acento superior */}
       <span
         aria-hidden="true"
@@ -53,7 +53,7 @@ export function ProductModal({
       <div className="grid sm:grid-cols-2">
         {/* Imagen — lámina completa (object-contain) sobre tinte del acento */}
         <div
-          className="relative h-60 shrink-0 sm:h-auto sm:min-h-[26rem]"
+          className="relative h-48 shrink-0 sm:h-auto sm:min-h-[26rem]"
           style={{
             background:
               "linear-gradient(165deg, color-mix(in srgb, var(--accent, transparent) 16%, var(--color-cream)), var(--color-cream))",

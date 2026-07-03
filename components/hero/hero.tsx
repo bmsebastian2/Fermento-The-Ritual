@@ -28,13 +28,7 @@ export function Hero() {
       {/* Silueta de Nicaragua — marca de agua de identidad, detrás del producto,
           sangrando por el borde inferior-derecho. Trazo fino, muy sutil. */}
       <NicaraguaSilhouette
-        className="pointer-events-none absolute -z-10 opacity-[0.2] hidden lg:block"
-        style={{
-          left: "50%",
-          top: "50%",
-          width: "min(48rem, 56%)",
-          transform: "translate(-50%, -48%) rotate(-4deg)",
-        }}
+        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 w-[min(34rem,94%)] opacity-[0.3] [transform:translate(-50%,-50%)_rotate(-4deg)] lg:top-1/2 lg:w-[min(48rem,56%)] lg:[transform:translate(-50%,-48%)_rotate(-4deg)]"
       />
 
       <Bubbles />

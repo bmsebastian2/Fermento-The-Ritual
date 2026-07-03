@@ -81,7 +81,7 @@ export function ProductDetailProvider({
         onClick={(e) => {
           if (e.target === dialogRef.current) close();
         }}
-        className={`m-0 mt-auto w-full max-w-none overflow-hidden rounded-t-2xl bg-cream p-0 text-ink shadow-2xl backdrop:bg-transparent sm:m-auto sm:max-w-3xl sm:rounded-xl transition-[transform,opacity] duration-300 ease-out ${
+        className={`mx-auto mb-4 mt-auto w-[calc(100%-2rem)] max-w-none overflow-hidden rounded-2xl bg-cream p-0 text-ink shadow-2xl backdrop:bg-transparent sm:m-auto sm:w-full sm:max-w-3xl sm:rounded-xl transition-[transform,opacity] duration-300 ease-out ${
           visible
             ? "translate-y-0 scale-100 opacity-100"
             : "translate-y-full opacity-0 sm:translate-y-0 sm:scale-95"

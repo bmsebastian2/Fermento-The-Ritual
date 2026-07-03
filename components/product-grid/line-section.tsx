@@ -13,7 +13,7 @@ export function LineSection({ id, line }: { id: string; line: Line }) {
   if (!meta) return null;
 
   return (
-    <section id={id} className="scroll-mt-24 px-6 py-20 lg:py-28">
+    <section id={id} className="scroll-mt-24 px-8 py-20 md:px-6 lg:py-28">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <header className="max-w-2xl">

@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/product-card/product-card";
 import { FeaturedProduct } from "@/components/product-card/featured-product";
 import { CocoFeature } from "@/components/product-card/coco-feature";
 import { ShotsFeature } from "@/components/product-grid/shots-feature";
+import { ProductCarousel } from "@/components/product-grid/product-carousel";
 import { Reveal } from "@/components/ui/reveal";
 
 /** Bloque de una categoría: encabezado + grilla de sus productos. */
@@ -28,6 +29,17 @@ export function ProductGrid({ categoryId }: { categoryId: CategoryId }) {
   // propio encabezado; se salta la grilla genérica de cards verticales.
   if (categoryId === "shots") {
     return <ShotsFeature category={category} products={items} />;
+  }
+
+  // Kombucha, Kéfir, Cold Brew y Dessert Jars: misma card del catálogo, pero
+  // carrusel con scroll-snap en mobile (deja la grilla estándar en sm+).
+  if (
+    categoryId === "kombucha" ||
+    categoryId === "kefir" ||
+    categoryId === "cold-brew" ||
+    categoryId === "postres"
+  ) {
+    return <ProductCarousel category={category} products={items} />;
   }
 
   return (
