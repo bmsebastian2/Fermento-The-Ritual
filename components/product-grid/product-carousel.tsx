@@ -42,7 +42,7 @@ export function ProductCarousel({
           borde a borde manteniendo el inset de la sección al enganchar.
           sm+: grilla estándar auto-rows-fr 2 → 4, sin overflow ni snap.
         */}
-        <div className="-mx-8 flex snap-x snap-mandatory gap-5 overflow-x-auto px-8 pb-2 scroll-px-8 [-ms-overflow-style:none] [scrollbar-width:none] sm:mx-0 sm:grid sm:auto-rows-fr sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 scroll-px-6 [-ms-overflow-style:none] [scrollbar-width:none] sm:mx-0 sm:grid sm:auto-rows-fr sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 [&::-webkit-scrollbar]:hidden">
           {products.map((product) => (
             <div
               key={product.id}
