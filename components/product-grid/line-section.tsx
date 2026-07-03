@@ -1,6 +1,7 @@
 import type { Line } from "@/lib/data/products";
 import { lines, categoriesByLine } from "@/lib/data/products";
 import { ProductGrid } from "@/components/product-grid/product-grid";
+import { BreadTeaser } from "@/components/product-grid/bread-teaser";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { LineIcon } from "@/components/ui/line-icon";
 import { Reveal } from "@/components/ui/reveal";
@@ -28,6 +29,15 @@ export function LineSection({ id, line }: { id: string; line: Line }) {
         {cats.map((cat) => (
           <ProductGrid key={cat.id} categoryId={cat.id} />
         ))}
+
+        {/* Colección de panes (aún sin lanzar) — cierre editorial de The Ritual. */}
+        {line === "ritual" && (
+          <div className="mt-14">
+            <Reveal>
+              <BreadTeaser />
+            </Reveal>
+          </div>
+        )}
       </div>
     </section>
   );

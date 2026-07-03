@@ -3,6 +3,7 @@ import { getCategory, productsByCategory } from "@/lib/data/products";
 import { ProductCard } from "@/components/product-card/product-card";
 import { FeaturedProduct } from "@/components/product-card/featured-product";
 import { CocoFeature } from "@/components/product-card/coco-feature";
+import { ShotsFeature } from "@/components/product-grid/shots-feature";
 import { Reveal } from "@/components/ui/reveal";
 
 /** Bloque de una categoría: encabezado + grilla de sus productos. */
@@ -21,6 +22,12 @@ export function ProductGrid({ categoryId }: { categoryId: CategoryId }) {
         </Reveal>
       </div>
     );
+  }
+
+  // Shots: spread editorial dedicado (imagen horizontal + beneficios), trae su
+  // propio encabezado; se salta la grilla genérica de cards verticales.
+  if (categoryId === "shots") {
+    return <ShotsFeature category={category} products={items} />;
   }
 
   return (

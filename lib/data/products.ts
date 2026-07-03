@@ -48,6 +48,24 @@ export interface Category {
   care?: string;
 }
 
+/** Íconos de beneficio funcional (solo shots por ahora). */
+export type BenefitIcon =
+  | "energy"
+  | "antioxidant"
+  | "heart"
+  | "digestion"
+  | "circulation"
+  | "detox"
+  | "hydrate"
+  | "vitamin"
+  | "shield"
+  | "immune";
+
+export interface Benefit {
+  icon: BenefitIcon;
+  label: string;
+}
+
 export interface Product {
   id: string;
   categoryId: CategoryId;
@@ -59,6 +77,8 @@ export interface Product {
   description: string;
   /** Notas de sabor / ingredientes clave, en sans. */
   notes: string[];
+  /** Beneficios funcionales con ícono (fuente: lámina de marca). */
+  benefits?: Benefit[];
   /** Alérgenos declarados (solo postres por ahora). */
   contains?: string;
   /** Etiquetas tipo "SIN PASTEURIZAR", en mayúsculas con tracking amplio. */
@@ -293,8 +313,14 @@ export const products: Product[] = [
     line: "ritual",
     name: "Red Vitality",
     size: "75 ml",
-    description: "Remolacha, jengibre, manzana y limón.",
+    description:
+      "Energía y vitalidad en cada shot. Apoya la salud cardiovascular y ayuda a combatir el cansancio diario.",
     notes: ["Remolacha", "Jengibre", "Manzana", "Limón"],
+    benefits: [
+      { icon: "energy", label: "Aporta energía" },
+      { icon: "antioxidant", label: "Rico en antioxidantes" },
+      { icon: "heart", label: "Salud cardiovascular" },
+    ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "beet",
     image: null,
@@ -306,8 +332,14 @@ export const products: Product[] = [
     line: "ritual",
     name: "Ginger Boost",
     size: "75 ml",
-    description: "Jengibre, limón y miel.",
+    description:
+      "Un impulso natural que despierta tu energía, mejora la digestión y revitaliza tu día.",
     notes: ["Jengibre", "Limón", "Miel"],
+    benefits: [
+      { icon: "energy", label: "Energizante natural" },
+      { icon: "digestion", label: "Mejora la digestión" },
+      { icon: "circulation", label: "Estimula la circulación" },
+    ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "jengibre",
     image: null,
@@ -319,8 +351,14 @@ export const products: Product[] = [
     line: "ritual",
     name: "Green Detox",
     size: "75 ml",
-    description: "Pepino, espinaca, manzana y limón.",
+    description:
+      "Limpia, fresca y ligera. Ideal para apoyar la desintoxicación natural del cuerpo y mantener el equilibrio.",
     notes: ["Pepino", "Espinaca", "Manzana", "Limón"],
+    benefits: [
+      { icon: "detox", label: "Desintoxicante" },
+      { icon: "hydrate", label: "Hidratante" },
+      { icon: "vitamin", label: "Fuente de vitaminas" },
+    ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "green",
     image: null,
@@ -332,8 +370,14 @@ export const products: Product[] = [
     line: "ritual",
     name: "Tumeric Defense",
     size: "75 ml",
-    description: "Cúrcuma, jengibre, limón, miel y pimienta negra.",
+    description:
+      "Una combinación poderosa que apoya tu sistema inmunológico y ayuda a reducir la inflamación naturalmente.",
     notes: ["Cúrcuma", "Jengibre", "Limón", "Miel", "Pimienta negra"],
+    benefits: [
+      { icon: "shield", label: "Antiinflamatorio natural" },
+      { icon: "immune", label: "Apoya el sistema inmune" },
+      { icon: "antioxidant", label: "Rico en antioxidantes" },
+    ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "pina",
     image: null,

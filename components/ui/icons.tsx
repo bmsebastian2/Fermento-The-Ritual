@@ -13,6 +13,26 @@ export function WhatsAppIcon({ className = "" }: { className?: string }) {
   );
 }
 
+/** Botella de shot con banda de etiqueta — señala el formato embotellado. */
+export function BottleShotIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="9.5" y="2.8" width="5" height="2.6" rx="0.7" />
+      <path d="M10 5.4c0 1-.2 1.7-.9 2.4C8.3 8.6 8 9.5 8 10.6v6.9C8 18.9 9 20 10.3 20h3.4c1.3 0 2.3-1.1 2.3-2.5v-6.9c0-1.1-.3-2-1.1-2.8-.7-.7-.9-1.4-.9-2.4" />
+      <path d="M8 12h8M8 15.5h8" />
+    </svg>
+  );
+}
+
 export function ArrowDownIcon({ className = "" }: { className?: string }) {
   return (
     <svg
