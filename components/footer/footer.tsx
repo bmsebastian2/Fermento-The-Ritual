@@ -1,3 +1,4 @@
+import { PalmFrond } from "@/components/hero/palm-frond";
 import { navLinks, whatsappUrl, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/site";
 
 function Wordmark() {
@@ -19,8 +20,36 @@ function Wordmark() {
 
 export function Footer() {
   return (
-    <footer className="bg-forest-deep px-6 py-14 text-cream/70">
-      <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1.2fr]">
+    <footer className="relative isolate overflow-hidden bg-forest-deep px-6 py-14 text-cream/70">
+      {/* Dosel de palma — cierre botánico del ritual: las frondas entran
+          arqueándose desde las esquinas superiores (espejo del hero, donde
+          abren sobre la botella). Marca de agua cream sobre fondo oscuro. */}
+      <PalmFrond
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 text-cream/[0.11]"
+        style={{
+          top: "-16%",
+          left: "-9%",
+          width: "min(26rem,42%)",
+          transform: "rotate(-24deg)",
+          filter:
+            "drop-shadow(6px 10px 18px color-mix(in srgb, var(--color-forest-deep) 70%, transparent))",
+        }}
+      />
+      <PalmFrond
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 text-cream/[0.08]"
+        style={{
+          top: "-20%",
+          right: "-8%",
+          width: "min(24rem,40%)",
+          transform: "scaleX(-1) rotate(-20deg)",
+          filter:
+            "drop-shadow(6px 10px 18px color-mix(in srgb, var(--color-forest-deep) 70%, transparent))",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1.2fr]">
         {/* Marca */}
         <div>
           <Wordmark />
@@ -81,7 +110,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto mt-12 flex max-w-6xl flex-col gap-2 border-t border-cream/10 pt-6 text-xs text-cream/45 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative z-10 mx-auto mt-12 flex max-w-6xl flex-col gap-2 border-t border-cream/10 pt-6 text-xs text-cream/45 sm:flex-row sm:items-center sm:justify-between">
         <p>© 2026 Fermento / The Ritual. Todos los derechos reservados.</p>
         <p>Bebidas vivas, fermentadas artesanalmente en Nicaragua.</p>
       </div>
