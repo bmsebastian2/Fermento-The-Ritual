@@ -370,7 +370,7 @@ export const products: Product[] = [
     id: "shot-tumeric-defense",
     categoryId: "shots",
     line: "ritual",
-    name: "Tumeric Defense",
+    name: "Turmeric Defense",
     size: "75 ml",
     description:
       "Una combinación poderosa que apoya tu sistema inmunológico y ayuda a reducir la inflamación naturalmente.",

@@ -12,7 +12,7 @@ Sitio web de **Fermento / The Ritual** (Viva Terra Group S.A., Managua, Nicaragu
   - Cold Brew (café de Dipilto), 375ml — clásico, Infusión Naranja y Miel.
 - **The Ritual** (funcionales/naturales):
   - Agua de Coco 100% natural, 330g.
-  - Shots, 75ml — Red Vitality, Ginger Boost, Green Detox, Tumeric Defense.
+  - Shots, 75ml — Red Vitality, Ginger Boost, Green Detox, Turmeric Defense.
   - Dessert Jars, 300g — Tiramisú, Chocolate Fudge, Tres Leches, Red Velvet.
 
 Ojo: no existe "Kombucha Café" — el café es la línea **Cold Brew**. Los precios reales aún no están definidos (todos con `// TODO: precio real`).
@@ -60,7 +60,7 @@ Componentes chicos y con un solo propósito. No mezclar lógica de datos con pre
 - Mobile-first siempre: escribir clases base para mobile, luego `md:` / `lg:` para escalar hacia arriba — nunca al revés.
 - Nombres de componentes y archivos en inglés (`ProductCard`, `product-card.tsx`), copy de UI en español (es el mercado nicaragüense).
 - Usar los tokens CSS de `design-system.md` vía variables (`var(--color-forest)`, etc.) o utilidades Tailwind derivadas del `@theme` de `globals.css` (`bg-forest`, `text-cream`) — no hardcodear hex sueltos en componentes.
-- Acentos por producto. Base (de `design-system.md`): `jamaica`, `jengibre`, `cafe`, `pina`, `coco`. **Acentos nuevos aprobados** (categorías sin token en design-system): `mango` `#d98a24`, `kefir` `#b8a282`, `berry` `#6c2a44`, `beet` `#8e2e3a`, `green` `#5f7a3a`, `dessert` `#6a4326`. Reusos: Cold Brew→`cafe`, Ginger Boost→`jengibre`, Tumeric Defense→`pina`, Kéfir Piña→`pina`, Red Velvet→`jamaica`. Cada card lleva un solo acento vía `var(--color-<accent>)`; conviven todos solo en la grilla de catálogo.
+- Acentos por producto. Base (de `design-system.md`): `jamaica`, `jengibre`, `cafe`, `pina`, `coco`. **Acentos nuevos aprobados** (categorías sin token en design-system): `mango` `#dc6f1e` (naranja-mango, separado de jengibre/piña), `kefir` `#b8a282`, `berry` `#6c2a44`, `beet` `#8e2e3a`, `green` `#5f7a3a`, `dessert` `#6a4326`. Reusos: Cold Brew→`cafe`, Ginger Boost→`jengibre`, Turmeric Defense→`pina`, Kéfir Piña→`pina`, Red Velvet→`jamaica`. Cada card lleva un solo acento vía `var(--color-<accent>)`; conviven todos solo en la grilla de catálogo.
 - Tipografías: display serif (Fraunces u equivalente definido en design-system.md) solo para títulos y nombres de sabor. Body sans para todo lo demás. No usar una tercera familia sin consultar.
 - Animaciones: respetar `prefers-reduced-motion`. No agregar libraries de animación pesadas (Framer Motion, GSAP) sin consultar primero — evaluar si CSS/Tailwind alcanza.
 - Antes de cualquier trabajo de UI, invocar el skill `frontend-design`.

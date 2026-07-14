@@ -82,7 +82,7 @@ function ShotRow({ product }: { product: Product }) {
         >
           <Image
             src={`/products/${product.id}-ingredients.webp`}
-            alt=""
+            alt={`${product.name}: ${product.notes.join(", ")}`}
             fill
             sizes="(max-width: 1024px) 45vw, 22vw"
             className="object-cover object-bottom"

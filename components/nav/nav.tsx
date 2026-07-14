@@ -40,6 +40,7 @@ export function Nav() {
   }, []);
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled || open
@@ -103,15 +104,18 @@ export function Nav() {
           </span>
         </button>
       </nav>
+    </header>
 
-      {/* Menú mobile */}
+      {/* Menú mobile — overlay full-screen bajo la barra del nav */}
       <div
         id="mobile-menu"
-        className={`border-t border-forest/10 bg-cream/95 backdrop-blur-md md:hidden ${
-          open ? "max-h-[36rem] overflow-y-auto" : "max-h-0 overflow-hidden border-t-0"
-        } transition-[max-height] duration-300 ease-out`}
+        className={`fixed inset-x-0 bottom-0 top-16 z-[45] overflow-y-auto border-t border-forest/10 bg-cream md:hidden transition-[opacity,transform] duration-300 ease-out ${
+          open
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
       >
-        <ul className="flex flex-col gap-1 px-6 py-4 text-ink">
+        <ul className="flex flex-col gap-1 px-6 py-6 text-ink">
           {navLinks.map((link) => {
             const line =
               link.href === "#fermento"
@@ -162,6 +166,6 @@ export function Nav() {
           </li>
         </ul>
       </div>
-    </header>
+    </>
   );
 }
