@@ -1,4 +1,5 @@
 import { Nav } from "@/components/nav/nav";
+import { CategoryNav } from "@/components/nav/category-nav";
 import { Hero } from "@/components/hero/hero";
 import { LineSection } from "@/components/product-grid/line-section";
 import { Contact } from "@/components/contact/contact";
@@ -12,10 +13,14 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
-        <ProductDetailProvider>
-          <LineSection id="fermento" line="fermento" />
-          <LineSection id="the-ritual" line="ritual" />
-        </ProductDetailProvider>
+        {/* Zona de catálogo: la barra de categorías es sticky solo aquí. */}
+        <div>
+          <CategoryNav />
+          <ProductDetailProvider>
+            <LineSection id="fermento" line="fermento" />
+            <LineSection id="the-ritual" line="ritual" />
+          </ProductDetailProvider>
+        </div>
         <Contact />
       </main>
       <Footer />

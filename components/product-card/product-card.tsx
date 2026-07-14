@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import type { Product } from "@/lib/data/products";
-import { accentVar, productImage, whatsappUrl } from "@/lib/site";
+import { accentVar, whatsappUrl } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
 import { WhatsAppIcon } from "@/components/ui/icons";
+import { ProductMedia } from "@/components/product-card/product-media";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -33,14 +33,11 @@ export function ProductCard({ product }: { product: Product }) {
         style={{ outlineColor: accent }}
       />
 
-      {/* Media — lámina de producto (WebP). object-top prioriza logo + sabor. */}
+      {/* Media — foto de producto o placeholder por acento (ProductMedia). */}
       <div className="relative w-32 shrink-0 overflow-hidden sm:aspect-[4/5] sm:w-full">
-        <Image
-          src={productImage(product)}
-          alt={`${product.name} — ${product.size}`}
-          fill
+        <ProductMedia
+          product={product}
           sizes="(max-width: 640px) 128px, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
         />
 
         {product.seasonal && (

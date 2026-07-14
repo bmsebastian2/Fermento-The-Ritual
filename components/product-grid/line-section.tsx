@@ -32,7 +32,7 @@ export function LineSection({ id, line }: { id: string; line: Line }) {
 
         {/* Colección de panes (aún sin lanzar) — cierre editorial de The Ritual. */}
         {line === "ritual" && (
-          <div className="mt-14">
+          <div id="cat-panes" className="mt-14 scroll-mt-32">
             <Reveal>
               <BreadTeaser />
             </Reveal>

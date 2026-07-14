@@ -171,7 +171,7 @@ export function ShotsFeature({
   products: Product[];
 }) {
   return (
-    <div className="mt-14 first:mt-0">
+    <div id="cat-shots" className="mt-14 scroll-mt-32 first:mt-0">
       <Reveal>
         <div className="mb-8 max-w-2xl">
           <StampLabel align="left">The Ritual · Wellness Shots</StampLabel>

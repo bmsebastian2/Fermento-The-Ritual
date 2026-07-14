@@ -17,7 +17,7 @@ export function ProductCarousel({
   products: Product[];
 }) {
   return (
-    <div className="mt-14 first:mt-0">
+    <div id={`cat-${category.id}`} className="mt-14 scroll-mt-32 first:mt-0">
       {/* Encabezado de categoría (idéntico a la grilla genérica). */}
       <div className="mb-6 max-w-2xl">
         <div className="flex items-baseline gap-3">
@@ -42,7 +42,7 @@ export function ProductCarousel({
           borde a borde manteniendo el inset de la sección al enganchar.
           sm+: grilla estándar auto-rows-fr 2 → 4, sin overflow ni snap.
         */}
-        <div className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 scroll-px-6 [-ms-overflow-style:none] [scrollbar-width:none] sm:mx-0 sm:grid sm:auto-rows-fr sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 scroll-px-6 [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-mask-image:linear-gradient(to_right,#000_86%,transparent)] [mask-image:linear-gradient(to_right,#000_86%,transparent)] sm:mx-0 sm:grid sm:auto-rows-fr sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 sm:[-webkit-mask-image:none] sm:[mask-image:none] lg:grid-cols-4 [&::-webkit-scrollbar]:hidden">
           {products.map((product) => (
             <div
               key={product.id}

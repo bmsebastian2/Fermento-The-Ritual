@@ -150,7 +150,7 @@ export function CocoFeature({
           >
             <div className="coco-media overflow-hidden rounded-[4px]">
               <Image
-                src={productImage(product)}
+                src={productImage(product) ?? "/products/agua-de-coco.webp"}
                 alt={`${product.name} The Ritual sobre madera, con cocos frescos`}
                 width={582}
                 height={838}

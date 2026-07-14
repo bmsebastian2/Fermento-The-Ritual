@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import type { Product } from "@/lib/data/products";
-import { accentVar, productImage, whatsappUrl } from "@/lib/site";
+import { accentVar, whatsappUrl } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/icons";
+import { ProductMedia } from "@/components/product-card/product-media";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
 
 /**
@@ -37,12 +37,10 @@ export function FeaturedProduct({ product }: { product: Product }) {
         className="relative aspect-[4/3] overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 md:aspect-auto md:min-h-[26rem]"
         style={{ outlineColor: accent }}
       >
-        <Image
-          src={productImage(product)}
-          alt={`${product.name} — ${product.size}`}
-          fill
+        <ProductMedia
+          product={product}
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          imageClassName="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </button>
 

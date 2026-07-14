@@ -1,11 +1,11 @@
-import Image from "next/image";
 import type { Product } from "@/lib/data/products";
 import { getCategory, lines } from "@/lib/data/products";
-import { accentVar, productImage, whatsappUrl } from "@/lib/site";
+import { accentVar, whatsappUrl } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/icons";
+import { ProductMedia } from "@/components/product-card/product-media";
 
 export function ProductModal({
   product,
@@ -60,12 +60,10 @@ export function ProductModal({
             ["--accent" as string]: accent,
           }}
         >
-          <Image
-            src={productImage(product)}
-            alt={`${product.name} — ${product.size}`}
-            fill
+          <ProductMedia
+            product={product}
             sizes="(max-width: 640px) 100vw, 384px"
-            className="object-contain p-4"
+            imageClassName="object-cover object-center"
           />
           {product.seasonal && (
             <span

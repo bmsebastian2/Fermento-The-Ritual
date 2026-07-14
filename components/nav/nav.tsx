@@ -5,6 +5,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import {
   navLinks,
+  catalogSections,
   whatsappUrl,
   WHATSAPP_DEFAULT_MESSAGE,
 } from "@/lib/site";
@@ -106,22 +107,48 @@ export function Nav() {
       {/* Menú mobile */}
       <div
         id="mobile-menu"
-        className={`overflow-hidden border-t border-forest/10 bg-cream/95 backdrop-blur-md md:hidden ${
-          open ? "max-h-80" : "max-h-0 border-t-0"
+        className={`border-t border-forest/10 bg-cream/95 backdrop-blur-md md:hidden ${
+          open ? "max-h-[36rem] overflow-y-auto" : "max-h-0 overflow-hidden border-t-0"
         } transition-[max-height] duration-300 ease-out`}
       >
         <ul className="flex flex-col gap-1 px-6 py-4 text-ink">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block py-2 text-lg transition-colors hover:text-forest"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const line =
+              link.href === "#fermento"
+                ? "fermento"
+                : link.href === "#the-ritual"
+                  ? "ritual"
+                  : null;
+            const subs = line
+              ? catalogSections.filter((s) => s.line === line)
+              : [];
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block py-2 text-lg font-medium transition-colors hover:text-forest"
+                >
+                  {link.label}
+                </a>
+                {subs.length > 0 && (
+                  <ul className="mb-1 ml-1 flex flex-col border-l border-forest/15 pl-4">
+                    {subs.map((s) => (
+                      <li key={s.id}>
+                        <a
+                          href={`#${s.id}`}
+                          onClick={() => setOpen(false)}
+                          className="block py-1.5 text-sm text-ink/65 transition-colors hover:text-forest"
+                        >
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
           <li className="pt-3">
             <ButtonLink
               href={whatsappUrl(WHATSAPP_DEFAULT_MESSAGE)}

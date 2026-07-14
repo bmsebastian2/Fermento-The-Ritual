@@ -17,7 +17,7 @@ export function ProductGrid({ categoryId }: { categoryId: CategoryId }) {
   // que trae su propio encabezado a escala display; se salta la card genérica.
   if (categoryId === "agua-de-coco") {
     return (
-      <div className="mt-14 first:mt-0">
+      <div id="cat-agua-de-coco" className="mt-14 scroll-mt-32 first:mt-0">
         <Reveal>
           <CocoFeature category={category} product={items[0]} />
         </Reveal>
@@ -43,7 +43,7 @@ export function ProductGrid({ categoryId }: { categoryId: CategoryId }) {
   }
 
   return (
-    <div className="mt-14 first:mt-0">
+    <div id={`cat-${categoryId}`} className="mt-14 scroll-mt-32 first:mt-0">
       {/* Encabezado de categoría */}
       <div className="mb-6 max-w-2xl">
         <div className="flex items-baseline gap-3">

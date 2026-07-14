@@ -4,10 +4,12 @@
  *
  * PRECIOS: ninguno confirmado todavía → `price: null` con `// TODO: precio real`.
  *          No inventar montos.
- * IMÁGENES: cada producto tiene su imagen WebP en public/products/<id>.webp
- *           (derivada por `productImage()` en lib/site.ts). Por ahora son las
- *           láminas de producto optimizadas; reemplazar por fotos limpias cuando
- *           las haya. `image` sirve solo para override puntual (normalmente null).
+ * IMÁGENES: `image` apunta a una foto LIMPIA de producto (botella/frasco/lata
+ *           recortada de las tomas reales en /assets/photos, sin texto de lámina).
+ *           Kombucha (salvo Mango de temporada), Kéfir, Cold Brew, Postres y Agua
+ *           de Coco ya tienen foto. Lo que quede en `null` cae a placeholder por
+ *           color de acento (ver `productImage()` en lib/site.ts). Los Shots usan
+ *           su propia botella ilustrada (shots-feature.tsx), no `image`.
  * ACENTO:   cada producto referencia un token de color de globals.css
  *           (var(--color-<accent>)). No mezclar acentos fuera de su card.
  */
@@ -161,7 +163,7 @@ export const products: Product[] = [
     notes: ["Infusión de jamaica", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "jamaica",
-    image: null,
+    image: "/products/kombucha-jamaica.webp",
     price: null, // TODO: precio real
   },
   {
@@ -175,7 +177,7 @@ export const products: Product[] = [
     notes: ["Jengibre fresco", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "jengibre",
-    image: null,
+    image: "/products/kombucha-jengibre.webp",
     price: null, // TODO: precio real
   },
   {
@@ -203,7 +205,7 @@ export const products: Product[] = [
     notes: ["Piña", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "pina",
-    image: null,
+    image: "/products/kombucha-pina.webp",
     price: null, // TODO: precio real
   },
 
@@ -218,7 +220,7 @@ export const products: Product[] = [
     notes: ["Sabor natural", "Cultivos vivos", "Probióticos"],
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "kefir",
-    image: null,
+    image: "/products/kefir-plain.webp",
     price: null, // TODO: precio real
   },
   {
@@ -231,7 +233,7 @@ export const products: Product[] = [
     notes: ["Mango", "Cultivos vivos", "Probióticos"],
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "mango",
-    image: null,
+    image: "/products/kefir-mango.webp",
     price: null, // TODO: precio real
   },
   {
@@ -244,7 +246,7 @@ export const products: Product[] = [
     notes: ["Fresa", "Mora", "Arándano", "Frambuesa"],
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "berry",
-    image: null,
+    image: "/products/kefir-frutos-rojos.webp",
     price: null, // TODO: precio real
   },
   {
@@ -257,7 +259,7 @@ export const products: Product[] = [
     notes: ["Piña", "Cultivos vivos", "Probióticos"],
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "pina",
-    image: null,
+    image: "/products/kefir-pina.webp",
     price: null, // TODO: precio real
   },
 
@@ -272,7 +274,7 @@ export const products: Product[] = [
     notes: ["Achocolatadas", "Mandarina", "Frutos secos", "Acidez baja"],
     badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
     accent: "cafe",
-    image: null,
+    image: "/products/cold-brew-clasico.webp",
     price: null, // TODO: precio real
   },
   {
@@ -286,7 +288,7 @@ export const products: Product[] = [
     notes: ["Cítricas", "Miel", "Semillas de jícaro", "Cacao"],
     badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
     accent: "cafe",
-    image: null,
+    image: "/products/cold-brew-naranja-miel.webp",
     price: null, // TODO: precio real
   },
 
@@ -302,7 +304,7 @@ export const products: Product[] = [
     notes: ["Hidratación pura", "Electrolitos naturales", "Sin azúcar añadida"],
     badges: ["100% NATURAL", "SIN AZÚCAR AÑADIDA"],
     accent: "coco",
-    image: null,
+    image: "/products/agua-de-coco.webp",
     price: null, // TODO: precio real
   },
 
@@ -397,7 +399,7 @@ export const products: Product[] = [
     contains: "Contiene gluten, lácteos, huevos y azúcar.",
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
-    image: null,
+    image: "/products/postre-tiramisu.webp",
     price: null, // TODO: precio real
   },
   {
@@ -412,7 +414,7 @@ export const products: Product[] = [
     contains: "Contiene gluten, lácteos, huevos y azúcar.",
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
-    image: null,
+    image: "/products/postre-chocolate-fudge.webp",
     price: null, // TODO: precio real
   },
   {
@@ -427,7 +429,7 @@ export const products: Product[] = [
     contains: "Contiene gluten, lácteos, huevos, canela y azúcar.",
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
-    image: null,
+    image: "/products/postre-tres-leches.webp",
     price: null, // TODO: precio real
   },
   {
@@ -442,7 +444,7 @@ export const products: Product[] = [
     contains: "Contiene gluten, lácteos, huevos, azúcar y cacao.",
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "jamaica",
-    image: null,
+    image: "/products/postre-red-velvet.webp",
     price: null, // TODO: precio real
   },
 ];
