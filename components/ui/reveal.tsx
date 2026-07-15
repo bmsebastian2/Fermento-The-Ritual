@@ -16,6 +16,8 @@ interface RevealProps {
 export function Reveal({ children, delay = 0, className }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
+  // Solo se activa cuando JS corre: sin él, el contenido queda visible por defecto.
+  const [armed, setArmed] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -29,6 +31,7 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
       return;
     }
 
+    setArmed(true);
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -50,8 +53,8 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
       className={className}
       style={{
         transitionDelay: `${delay}ms`,
-        opacity: shown ? 1 : 0,
-        transform: shown ? "none" : "translateY(1.5rem)",
+        opacity: armed && !shown ? 0 : 1,
+        transform: armed && !shown ? "translateY(1.5rem)" : "none",
         transitionProperty: "opacity, transform",
         transitionDuration: "600ms",
         transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",

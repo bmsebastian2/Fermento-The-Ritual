@@ -150,7 +150,7 @@ export function ProductModal({
           <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-ink/10 pt-5">
             <ButtonLink href={whatsappUrl(orderMessage)} variant="primary" external>
               <WhatsAppIcon className="h-4 w-4" />
-              Pedir por WhatsApp
+              Pedí por WhatsApp
             </ButtonLink>
             <span className="text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
               {product.size}

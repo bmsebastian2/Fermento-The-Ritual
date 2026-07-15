@@ -1,6 +1,32 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { WHATSAPP_NUMBER } from "@/lib/site";
 import "./globals.css";
+
+// Datos estructurados para SEO local (Rich Results). Solo datos reales del
+// código; sin dirección exacta ni horarios que no estén definidos.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Fermento / The Ritual",
+  url: "https://fermentotheritual.com",
+  image: "https://fermentotheritual.com/products/agua-de-coco.webp",
+  description:
+    "Kombucha, kéfir, cold brew y bebidas funcionales artesanales de Managua, Nicaragua. Cultivos vivos, materia prima real.",
+  telephone: `+${WHATSAPP_NUMBER}`,
+  email: "info@fermentotheritual.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Managua",
+    addressCountry: "NI",
+  },
+  areaServed: "NI",
+  parentOrganization: {
+    "@type": "Organization",
+    name: "Viva Terra Group S.A.",
+  },
+  sameAs: [`https://wa.me/${WHATSAPP_NUMBER}`],
+};
 
 // Display serif — solo títulos, hero y nombres de sabor. opsz activado para
 // que las curvas se sientan hechas a mano en tamaños grandes.
@@ -66,7 +92,15 @@ export default function RootLayout({
       lang="es"
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

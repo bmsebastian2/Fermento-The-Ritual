@@ -72,7 +72,7 @@ export function Nav() {
             className="px-4 py-2 text-xs"
           >
             <WhatsAppIcon className="h-4 w-4" />
-            Pedí ya
+            Pedir
           </ButtonLink>
         </div>
 

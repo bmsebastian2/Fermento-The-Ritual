@@ -103,7 +103,7 @@ export function CocoFeature({
           <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
             <ButtonLink href={whatsappUrl(orderMessage)} variant="primary" external>
               <WhatsAppIcon className="h-4 w-4" />
-              Pedir por WhatsApp
+              Pedí por WhatsApp
             </ButtonLink>
             <button
               type="button"

@@ -60,9 +60,9 @@ export function ProductCard({ product }: { product: Product }) {
           ))}
         </div>
 
-        <h3 className="font-display text-xl leading-tight text-forest-deep line-clamp-2 sm:text-2xl">
+        <h4 className="font-display text-xl leading-tight text-forest-deep line-clamp-2 sm:text-2xl">
           {product.name}
-        </h3>
+        </h4>
 
         <p className="text-sm leading-relaxed text-ink/70 line-clamp-2">
           {product.notes.join(" · ")}

@@ -1,9 +1,14 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 /**
  * Campo de burbujas de fermentación — el elemento distintivo de la página.
  * CSS puro (sin canvas), sutil y performante. Se congela con reduced-motion
  * vía la regla global de globals.css. Decorativo: aria-hidden.
  *
  * Conjunto fijo (no aleatorio) para evitar mismatch de hidratación.
+ * La animación se pausa cuando el hero sale del viewport (IntersectionObserver).
  */
 
 type Bubble = {
@@ -38,8 +43,23 @@ const bubbles: Bubble[] = [
 ];
 
 export function Bubbles() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
@@ -57,6 +77,7 @@ export function Bubbles() {
             ["--bubble-opacity" as string]: String(b.opacity),
             ["--bubble-drift" as string]: `${b.drift}px`,
             animation: `bubble-rise ${b.duration}s linear ${b.delay}s infinite`,
+            animationPlayState: visible ? "running" : "paused",
           }}
         />
       ))}

@@ -54,9 +54,9 @@ export function FeaturedProduct({ product }: { product: Product }) {
           ))}
         </div>
 
-        <h3 className="font-display text-4xl leading-tight text-forest-deep lg:text-5xl">
+        <h4 className="font-display text-4xl leading-tight text-forest-deep lg:text-5xl">
           {product.name}
-        </h3>
+        </h4>
 
         <p className="max-w-md text-base leading-relaxed text-ink/75">
           {product.description}
@@ -86,7 +86,7 @@ export function FeaturedProduct({ product }: { product: Product }) {
             external
           >
             <WhatsAppIcon className="h-4 w-4" />
-            Pedir por WhatsApp
+            Pedí por WhatsApp
           </ButtonLink>
           <button
             type="button"

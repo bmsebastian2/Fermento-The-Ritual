@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Product } from "@/lib/data/products";
+import { getCategory } from "@/lib/data/products";
 import { accentVar, productImage } from "@/lib/site";
 
 const LINE_NAME: Record<Product["line"], string> = {
@@ -30,11 +31,19 @@ export function ProductMedia({
   const src = productImage(product);
   const accent = accentVar(product.accent);
 
+  // Alt con categoría para contexto (ej. "Kombucha Jamaica"), sin repetir
+  // cuando el nombre del producto ya coincide con la categoría (ej. "Cold Brew").
+  const category = getCategory(product.categoryId);
+  const label =
+    category && category.name !== product.name
+      ? `${category.name} ${product.name}`
+      : product.name;
+
   if (src) {
     return (
       <Image
         src={src}
-        alt={`${product.name} — ${product.size}`}
+        alt={`${label} — ${product.size}`}
         fill
         sizes={sizes}
         className={imageClassName}
