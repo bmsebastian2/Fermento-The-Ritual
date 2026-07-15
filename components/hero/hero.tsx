@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Bubbles } from "@/components/hero/bubbles";
-import { NicaraguaSilhouette } from "@/components/hero/nicaragua-silhouette";
 import { PalmFrond } from "@/components/hero/palm-frond";
 import { ProductCallouts, type Callout } from "@/components/hero/product-callouts";
 import { StampLabel } from "@/components/ui/stamp-label";
@@ -25,12 +24,6 @@ export function Hero() {
       id="inicio"
       className="relative isolate overflow-hidden px-6 pt-28 pb-16 md:pt-32 lg:pb-24"
     >
-      {/* Silueta de Nicaragua — marca de agua de identidad, detrás del producto,
-          sangrando por el borde inferior-derecho. Trazo fino, muy sutil. */}
-      <NicaraguaSilhouette
-        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 w-[min(34rem,94%)] opacity-[0.3] [transform:translate(-50%,-50%)_rotate(-4deg)] lg:top-1/2 lg:w-[min(48rem,56%)] lg:[transform:translate(-50%,-48%)_rotate(-4deg)]"
-      />
-
       <Bubbles />
 
       <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
@@ -42,15 +35,15 @@ export function Hero() {
             </StampLabel>
           </div>
 
-          <h1 className="mt-7 font-display text-forest leading-[0.92] tracking-tight">
+          <h1 className="mt-7 font-display font-semibold text-forest leading-[0.92] tracking-tight">
             <span
-              className="hero-in block text-6xl sm:text-7xl lg:text-8xl"
+              className="hero-in block text-6xl font-bold italic sm:text-7xl lg:text-8xl"
               style={{ animationDelay: "120ms" }}
             >
               Vivo.
             </span>
             <span
-              className="hero-in block text-6xl italic sm:text-7xl lg:text-8xl"
+              className="hero-in block text-6xl sm:text-7xl lg:text-8xl"
               style={{ animationDelay: "220ms" }}
             >
               Natural.
