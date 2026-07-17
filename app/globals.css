@@ -247,6 +247,58 @@ dialog[data-visible="true"]::backdrop {
   }
 }
 
+/* ── Galería: fotos como copias impresas sobre la mesa del taller ──
+   Mismo gesto que la lata del hero (coco-media §5): leve rotación + sombra
+   cálida en capas (luz arriba-izq). Al hover la copia se endereza y se
+   levanta. El giro propio de cada copia llega en --rot. */
+.gallery-print {
+  --rot: 0deg;
+  transform: rotate(var(--rot));
+  /* Sombra de contacto (cerca, apoya la copia) + sombra larga difusa (volumen). */
+  box-shadow:
+    5px 8px 14px -6px color-mix(in srgb, var(--color-forest-deep) 45%, transparent),
+    20px 32px 52px -18px color-mix(in srgb, var(--color-forest-deep) 50%, transparent);
+  transition:
+    transform 600ms cubic-bezier(0.34, 1.36, 0.5, 1),
+    box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .gallery-print-trigger:hover .gallery-print {
+    transform: rotate(0deg) translateY(-10px) scale(1.02);
+    box-shadow:
+      8px 12px 20px -6px color-mix(in srgb, var(--color-forest-deep) 48%, transparent),
+      30px 50px 82px -20px color-mix(in srgb, var(--color-forest-deep) 55%, transparent);
+  }
+}
+
+/* Detalle del producto sobre cada copia. El texto siempre está en el DOM (lo
+   lee un lector de pantalla). En desktop aparece al hover/foco de la copia; en
+   touch —sin hover— queda fijo, para no esconder la info tras un gesto que el
+   móvil no tiene. */
+.gallery-caption {
+  opacity: 0;
+  transform: translateY(0.6rem);
+  transition:
+    opacity 320ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .gallery-print-trigger:hover .gallery-caption,
+  .gallery-print-trigger:focus-within .gallery-caption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (hover: none) {
+  .gallery-caption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Motion con propósito — respetar preferencia del sistema. */
 @media (prefers-reduced-motion: reduce) {
   *,

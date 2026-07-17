@@ -79,6 +79,18 @@ export function Hero() {
               <WhatsAppIcon className="h-4 w-4" />
               Pedí por WhatsApp
             </ButtonLink>
+            <a
+              href="#galeria"
+              className="group/gal self-center text-sm font-medium text-forest/70 underline-offset-4 transition-colors hover:text-forest"
+            >
+              Ver la galería
+              <span
+                aria-hidden="true"
+                className="ml-1 inline-block transition-transform group-hover/gal:translate-x-0.5"
+              >
+                →
+              </span>
+            </a>
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import { Nav } from "@/components/nav/nav";
 import { CategoryNav } from "@/components/nav/category-nav";
 import { Hero } from "@/components/hero/hero";
 import { LineSection } from "@/components/product-grid/line-section";
+import { Gallery } from "@/components/gallery/gallery";
 import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
@@ -27,6 +28,7 @@ export default function Home() {
             <LineSection id="the-ritual" line="ritual" />
           </ProductDetailProvider>
         </div>
+        <Gallery />
         <Contact />
       </main>
       <Footer />
