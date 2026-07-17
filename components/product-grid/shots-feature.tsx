@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import type { Category, Product } from "@/lib/data/products";
-import { accentVar, whatsappUrl } from "@/lib/site";
+import { accentVar } from "@/lib/site";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { BenefitIcon } from "@/components/ui/benefit-icons";
-import { WhatsAppIcon } from "@/components/ui/icons";
 import { ShotBottle } from "@/components/ui/shot-bottle";
 import { PalmFrond } from "@/components/hero/palm-frond";
 import { Reveal } from "@/components/ui/reveal";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 
 /**
  * Spread editorial de los Wellness Shots (The Ritual).
@@ -23,7 +23,6 @@ import { useProductDetail } from "@/components/product-detail/product-detail-pro
 function ShotRow({ product }: { product: Product }) {
   const { open } = useProductDetail();
   const accent = accentVar(product.accent);
-  const orderMessage = `¡Hola Fermento! Quiero pedir ${product.name} (${product.size}) 🌱`;
 
   return (
     <article
@@ -146,17 +145,7 @@ function ShotRow({ product }: { product: Product }) {
           <span className="text-xs font-medium uppercase tracking-[0.1em] text-ink/55">
             {product.size} · 2 oz
           </span>
-          <a
-            href={whatsappUrl(orderMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-20 inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-70"
-            style={{ color: accent }}
-            aria-label={`Pedir ${product.name} por WhatsApp`}
-          >
-            <WhatsAppIcon className="h-3.5 w-3.5" />
-            Pedir
-          </a>
+          <AddToCartButton product={product} variant="compact" />
         </div>
       </div>
     </article>

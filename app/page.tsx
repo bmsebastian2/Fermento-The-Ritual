@@ -6,10 +6,16 @@ import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { ProductDetailProvider } from "@/components/product-detail/product-detail-provider";
+import { CartProvider } from "@/components/cart/cart-provider";
+import { CartDrawer } from "@/components/cart/cart-drawer";
 
 export default function Home() {
   return (
-    <>
+    // El pedido envuelve toda la página porque sus dos extremos están lejos:
+    // el contador vive en el Nav y los "Agregar" en el catálogo.
+    // Nav, Hero y LineSection siguen siendo server components: se crean acá y
+    // llegan al provider como `children`, y eso no los vuelve client.
+    <CartProvider>
       <Nav />
       <main className="flex-1">
         <Hero />
@@ -25,6 +31,7 @@ export default function Home() {
       </main>
       <Footer />
       <ScrollToTop />
-    </>
+      <CartDrawer />
+    </CartProvider>
   );
 }

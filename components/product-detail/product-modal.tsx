@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { Product } from "@/lib/data/products";
 import { getCategory, lines } from "@/lib/data/products";
 import { accentVar, whatsappUrl } from "@/lib/site";
@@ -6,6 +9,32 @@ import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { ProductMedia } from "@/components/product-card/product-media";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
+
+/** Paso de cantidad — cuadrado, mismo idioma que el stepper del drawer. */
+function StepButton({
+  onClick,
+  label,
+  disabled,
+  children,
+}: {
+  onClick: () => void;
+  label: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="flex h-11 w-9 items-center justify-center text-ink/70 transition-colors hover:bg-forest/[0.06] hover:text-forest disabled:pointer-events-none disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-forest"
+    >
+      {children}
+    </button>
+  );
+}
 
 export function ProductModal({
   product,
@@ -14,6 +43,7 @@ export function ProductModal({
   product: Product;
   onClose: () => void;
 }) {
+  const [qty, setQty] = useState(1);
   const accent = accentVar(product.accent);
   const category = getCategory(product.categoryId);
   const lineName = lines.find((l) => l.id === product.line)?.name ?? "";
@@ -146,15 +176,78 @@ export function ProductModal({
             <p className="text-xs italic text-ink/55">{product.contains}</p>
           )}
 
-          {/* Tamaño + CTA */}
-          <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-ink/10 pt-5">
-            <ButtonLink href={whatsappUrl(orderMessage)} variant="primary" external>
-              <WhatsAppIcon className="h-4 w-4" />
-              Pedí por WhatsApp
-            </ButtonLink>
-            <span className="text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
-              {product.size}
-            </span>
+          {/* Cantidad + CTA. Agregar es la acción principal; el WhatsApp
+              directo queda como salida secundaria para pedir solo este. */}
+          <div className="mt-auto flex flex-col gap-3 border-t border-ink/10 pt-5">
+            <div className="flex items-stretch gap-3">
+              <div className="flex items-center border border-ink/15">
+                <StepButton
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  label="Quitar una unidad"
+                  disabled={qty <= 1}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                  </svg>
+                </StepButton>
+                <span
+                  aria-live="polite"
+                  className="min-w-8 text-center text-sm font-semibold tabular-nums text-forest-deep"
+                >
+                  {qty}
+                </span>
+                <StepButton
+                  onClick={() => setQty((q) => Math.min(99, q + 1))}
+                  label="Agregar una unidad"
+                  disabled={qty >= 99}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </StepButton>
+              </div>
+
+              {/* openOnAdd={false}: abrir el drawer acá apilaría dos <dialog>.
+                  Confirma en el botón y sube el contador del nav. */}
+              <AddToCartButton
+                product={product}
+                qty={qty}
+                variant="primary"
+                openOnAdd={false}
+                className="flex-1"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <ButtonLink
+                href={whatsappUrl(orderMessage)}
+                variant="outline"
+                external
+                className="px-4 py-2 text-xs"
+              >
+                <WhatsAppIcon className="h-4 w-4" />
+                Pedí solo este
+              </ButtonLink>
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
+                {product.size}
+              </span>
+            </div>
           </div>
         </div>
       </div>

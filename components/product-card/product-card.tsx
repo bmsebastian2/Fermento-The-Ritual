@@ -1,16 +1,15 @@
 "use client";
 
 import type { Product } from "@/lib/data/products";
-import { accentVar, whatsappUrl } from "@/lib/site";
+import { accentVar } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
-import { WhatsAppIcon } from "@/components/ui/icons";
 import { ProductMedia } from "@/components/product-card/product-media";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 
 export function ProductCard({ product }: { product: Product }) {
   const { open } = useProductDetail();
   const accent = accentVar(product.accent);
-  const orderMessage = `¡Hola Fermento! Quiero pedir ${product.name} (${product.size}) 🌱`;
 
   return (
     <article
@@ -79,17 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
           <span className="text-xs font-medium uppercase tracking-[0.1em] text-ink/55">
             {product.size}
           </span>
-          <a
-            href={whatsappUrl(orderMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-20 inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-70"
-            style={{ color: accent }}
-            aria-label={`Pedir ${product.name} por WhatsApp`}
-          >
-            <WhatsAppIcon className="h-3.5 w-3.5" />
-            Pedir
-          </a>
+          <AddToCartButton product={product} variant="compact" />
         </div>
       </div>
     </article>

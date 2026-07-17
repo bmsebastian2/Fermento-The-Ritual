@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/icons";
+import { CartButton } from "@/components/cart/cart-button";
 import {
   navLinks,
   catalogSections,
@@ -65,44 +66,50 @@ export function Nav() {
               </li>
             ))}
           </ul>
-          <ButtonLink
-            href={whatsappUrl(WHATSAPP_DEFAULT_MESSAGE)}
-            variant="primary"
-            external
-            className="px-4 py-2 text-xs"
-          >
-            <WhatsAppIcon className="h-4 w-4" />
-            Pedir
-          </ButtonLink>
+          <div className="flex items-center gap-2">
+            <ButtonLink
+              href={whatsappUrl(WHATSAPP_DEFAULT_MESSAGE)}
+              variant="primary"
+              external
+              className="px-4 py-2 text-xs"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Pedir
+            </ButtonLink>
+            <CartButton />
+          </div>
         </div>
 
-        {/* Botón mobile */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          className="flex h-10 w-10 items-center justify-center text-forest md:hidden"
-        >
-          <span className="relative block h-4 w-6">
-            <span
-              className={`absolute left-0 block h-0.5 w-6 bg-current transition-transform duration-300 ${
-                open ? "top-1.5 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-1.5 block h-0.5 w-6 bg-current transition-opacity duration-200 ${
-                open ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`absolute left-0 block h-0.5 w-6 bg-current transition-transform duration-300 ${
-                open ? "top-1.5 -rotate-45" : "top-3"
-              }`}
-            />
-          </span>
-        </button>
+        {/* Acciones mobile: el pedido queda siempre a mano, fuera del menú. */}
+        <div className="flex items-center gap-1 md:hidden">
+          <CartButton />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            className="flex h-10 w-10 items-center justify-center text-forest"
+          >
+            <span className="relative block h-4 w-6">
+              <span
+                className={`absolute left-0 block h-0.5 w-6 bg-current transition-transform duration-300 ${
+                  open ? "top-1.5 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-1.5 block h-0.5 w-6 bg-current transition-opacity duration-200 ${
+                  open ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-0.5 w-6 bg-current transition-transform duration-300 ${
+                  open ? "top-1.5 -rotate-45" : "top-3"
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </nav>
     </header>
 

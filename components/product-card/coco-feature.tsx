@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import type { Category, Product } from "@/lib/data/products";
-import { accentVar, productImage, whatsappUrl } from "@/lib/site";
+import { accentVar, productImage } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
-import { ButtonLink } from "@/components/ui/button";
 import { StampLabel } from "@/components/ui/stamp-label";
-import { WhatsAppIcon } from "@/components/ui/icons";
 import { CocoIcon, type CocoIconName } from "@/components/ui/coco-icons";
 import { PalmFrond } from "@/components/hero/palm-frond";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 
 /**
  * Spread editorial del Agua de Coco (producto estrella de The Ritual).
@@ -45,7 +44,6 @@ export function CocoFeature({
 }) {
   const { open } = useProductDetail();
   const accent = accentVar(product.accent);
-  const orderMessage = `¡Hola Fermento! Quiero pedir ${product.name} (${product.size}) 🌱`;
 
   return (
     <article
@@ -101,10 +99,7 @@ export function CocoFeature({
 
           {/* CTA */}
           <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <ButtonLink href={whatsappUrl(orderMessage)} variant="primary" external>
-              <WhatsAppIcon className="h-4 w-4" />
-              Pedí por WhatsApp
-            </ButtonLink>
+            <AddToCartButton product={product} variant="primary" />
             <button
               type="button"
               onClick={() => open(product)}
