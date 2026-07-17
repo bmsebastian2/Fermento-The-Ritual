@@ -1,6 +1,7 @@
 import type { CategoryId, Product } from "@/lib/data/products";
 import { getCategory } from "@/lib/data/products";
-import { whatsappUrl } from "@/lib/site";
+import type { DeliveryMethodId } from "@/lib/site";
+import { getDeliveryMethod, whatsappUrl } from "@/lib/site";
 
 /**
  * Capa de checkout — punto único por donde sale un pedido.
@@ -26,8 +27,12 @@ export interface CheckoutProvider {
   id: string;
   /** Etiqueta del CTA que dispara el envío, en el idioma de la UI. */
   ctaLabel: string;
-  /** Entrega el pedido por el canal correspondiente. */
-  submit(items: CheckoutItem[]): void;
+  /**
+   * Entrega el pedido por el canal correspondiente. `delivery` es el modo de
+   * entrega elegido por el usuario (nunca `null`: el drawer bloquea el envío
+   * hasta que se elija). Una pasarela futura recibe el mismo dato.
+   */
+  submit(items: CheckoutItem[], delivery: DeliveryMethodId): void;
 }
 
 // ── Mensaje de WhatsApp ──────────────────────────────────────────────────
@@ -62,11 +67,19 @@ export function totalUnits(items: CheckoutItem[]): number {
  * pensada para leerse sin wrap en la pantalla de un teléfono. Cierra pidiendo
  * la cotización: el total en córdobas lo confirma Fermento, no el sitio.
  */
-export function buildOrderMessage(items: CheckoutItem[]): string {
+export function buildOrderMessage(
+  items: CheckoutItem[],
+  delivery: DeliveryMethodId,
+): string {
   const lines = items.map(
     ({ product, qty }) => `• ${qty}× ${productLabel(product)} — ${product.size}`,
   );
   const units = totalUnits(items);
+  const method = getDeliveryMethod(delivery);
+  // "Delivery a domicilio (costo a confirmar)" / "Retiro en persona".
+  const deliveryLine = method
+    ? `Entrega: ${method.label}${method.note ? ` (${method.note.toLowerCase()})` : ""}`
+    : null;
 
   return [
     "¡Hola Fermento! Quiero hacer este pedido 🌱",
@@ -74,6 +87,7 @@ export function buildOrderMessage(items: CheckoutItem[]): string {
     ...lines,
     "",
     `Total: ${units} ${units === 1 ? "unidad" : "unidades"}`,
+    ...(deliveryLine ? [deliveryLine] : []),
     "¿Me confirman precio y disponibilidad?",
   ].join("\n");
 }
@@ -84,10 +98,10 @@ export function buildOrderMessage(items: CheckoutItem[]): string {
 export const whatsappCheckout: CheckoutProvider = {
   id: "whatsapp",
   ctaLabel: "Enviar pedido por WhatsApp",
-  submit(items) {
+  submit(items, delivery) {
     if (items.length === 0) return;
     window.open(
-      whatsappUrl(buildOrderMessage(items)),
+      whatsappUrl(buildOrderMessage(items, delivery)),
       "_blank",
       "noopener,noreferrer",
     );

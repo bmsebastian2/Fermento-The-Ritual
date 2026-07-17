@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { checkout } from "@/lib/checkout";
+import { deliveryMethods } from "@/lib/site";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { CartItem } from "@/components/cart/cart-item";
@@ -23,7 +24,8 @@ import { useCart } from "@/components/cart/cart-provider";
 const EXIT_MS = 300;
 
 export function CartDrawer() {
-  const { items, count, isOpen, closeCart, clear } = useCart();
+  const { items, count, delivery, setDelivery, isOpen, closeCart, clear } =
+    useCart();
   const [visible, setVisible] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -148,21 +150,78 @@ export function CartDrawer() {
               </button>
             </div>
 
+            {/* ── Modo de entrega ────────────────────────────────────────
+                Radio group nativo: navegable con flechas y anunciado como
+                grupo por el lector de pantalla sin JS de accesibilidad propio.
+                Las opciones salen de `deliveryMethods` (lib/site.ts). */}
+            <fieldset className="mt-4">
+              <legend className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
+                ¿Cómo querés recibirlo?
+              </legend>
+              <div className="mt-2.5 flex flex-col gap-2">
+                {deliveryMethods.map((method) => {
+                  const selected = delivery === method.id;
+                  return (
+                    <label
+                      key={method.id}
+                      className={`flex cursor-pointer items-center gap-3 border px-3.5 py-2.5 transition-colors ${
+                        selected
+                          ? "border-forest bg-forest/[0.05]"
+                          : "border-ink/15 hover:border-forest/40"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="delivery-method"
+                        value={method.id}
+                        checked={selected}
+                        onChange={() => setDelivery(method.id)}
+                        className="h-4 w-4 shrink-0 accent-forest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest"
+                      />
+                      <span className="flex min-w-0 flex-col">
+                        <span className="text-sm font-medium leading-tight text-forest-deep">
+                          {method.label}
+                        </span>
+                        {method.note && (
+                          <span className="mt-0.5 text-xs text-ink/50">
+                            {method.note}
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+
             <p className="mt-3 text-xs leading-relaxed text-ink/55">
               Te confirmamos precio y disponibilidad por WhatsApp al recibir el
               pedido.
             </p>
 
             {/* Mismo lenguaje que ButtonLink (variant primary), como <button>:
-                el envío es una acción, no una navegación a una URL fija. */}
+                el envío es una acción, no una navegación a una URL fija.
+                Bloqueado hasta elegir modo de entrega — el texto de abajo
+                explica por qué, no queda un botón muerto sin feedback. */}
             <button
               type="button"
-              onClick={() => checkout.submit(items)}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-forest-deep hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest"
+              onClick={() => delivery && checkout.submit(items, delivery)}
+              disabled={!delivery}
+              aria-describedby={!delivery ? "delivery-hint" : undefined}
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-forest-deep hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest disabled:pointer-events-none disabled:bg-forest/40 disabled:shadow-none"
             >
               {checkout.id === "whatsapp" && <WhatsAppIcon className="h-4 w-4" />}
               {checkout.ctaLabel}
             </button>
+
+            {!delivery && (
+              <p
+                id="delivery-hint"
+                className="mt-2 text-center text-xs text-ink/55"
+              >
+                Elegí cómo querés recibir el pedido para continuar.
+              </p>
+            )}
           </footer>
         )}
       </div>

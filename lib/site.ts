@@ -13,6 +13,29 @@ export function whatsappUrl(message?: string): string {
 export const WHATSAPP_DEFAULT_MESSAGE =
   "¡Hola Fermento! Quiero hacer un pedido 🌱";
 
+/**
+ * Modos de entrega del pedido. Dato de negocio editable: cuando se defina el
+ * costo del delivery o la dirección del punto de retiro, se toca solo esta lista
+ * (y no el drawer). `note` es la aclaración que acompaña a la opción en la UI y
+ * en el mensaje de WhatsApp — hoy "Costo a confirmar" en delivery, porque ni la
+ * tarifa ni las zonas están definidas; el retiro no lleva nota (sin dirección aún).
+ */
+export type DeliveryMethodId = "delivery" | "pickup";
+
+export const deliveryMethods: {
+  id: DeliveryMethodId;
+  label: string;
+  note?: string;
+}[] = [
+  { id: "delivery", label: "Delivery a domicilio", note: "Costo a confirmar" },
+  { id: "pickup", label: "Retiro en persona" },
+];
+
+/** Busca un modo de entrega por id (o `undefined` si el id no existe). */
+export function getDeliveryMethod(id: DeliveryMethodId | null) {
+  return deliveryMethods.find((m) => m.id === id);
+}
+
 export const navLinks: { href: string; label: string }[] = [
   { href: "#fermento", label: "Fermento" },
   { href: "#the-ritual", label: "The Ritual" },
