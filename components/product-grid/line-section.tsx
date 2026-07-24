@@ -7,7 +7,7 @@ import { LineIcon } from "@/components/ui/line-icon";
 import { Reveal } from "@/components/ui/reveal";
 
 /** Sección de una línea de producto (Fermento o The Ritual). */
-export function LineSection({ id, line }: { id: string; line: Line }) {
+export function  LineSection({ id, line }: { id: string; line: Line }) {
   const meta = lines.find((l) => l.id === line);
   const cats = categoriesByLine(line);
   if (!meta) return null;

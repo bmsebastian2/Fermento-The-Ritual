@@ -107,15 +107,6 @@ export const categories: Category[] = [
     care: "Mantener refrigerado · No agitar · Abrir con cuidado.",
   },
   {
-    id: "kefir",
-    line: "fermento",
-    name: "Kéfir",
-    size: "360 ml",
-    blurb:
-      "Bebida fermentada con cultivos vivos, 100% natural y orgánico. Con probióticos, fácil de digerir, fortalece el sistema inmunológico.",
-    care: "Agitar bien antes de disfrutar · Mantener refrigerado.",
-  },
-  {
     id: "cold-brew",
     line: "fermento",
     name: "Cold Brew",
@@ -123,6 +114,15 @@ export const categories: Category[] = [
     blurb:
       "Café cultivado en zonas altas de Dipilto, Nicaragua. 12 horas de extracción, hecho artesanalmente. Energizante natural.",
     care: "Mantener refrigerado.",
+  },
+  {
+    id: "kefir",
+    line: "ritual",
+    name: "Kéfir",
+    size: "360 ml",
+    blurb:
+      "Bebida fermentada con cultivos vivos, 100% natural y orgánico. Con probióticos, fácil de digerir, fortalece el sistema inmunológico.",
+    care: "Agitar bien antes de disfrutar · Mantener refrigerado.",
   },
   {
     id: "agua-de-coco",
@@ -214,7 +214,7 @@ export const products: Product[] = [
   {
     id: "kefir-plain",
     categoryId: "kefir",
-    line: "fermento",
+    line: "ritual",
     name: "Plain",
     size: "360 ml",
     description: "Sabor natural, sin frutas añadidas.",
@@ -227,7 +227,7 @@ export const products: Product[] = [
   {
     id: "kefir-mango",
     categoryId: "kefir",
-    line: "fermento",
+    line: "ritual",
     name: "Mango",
     size: "360 ml",
     description: "Con mango.",
@@ -240,7 +240,7 @@ export const products: Product[] = [
   {
     id: "kefir-frutos-rojos",
     categoryId: "kefir",
-    line: "fermento",
+    line: "ritual",
     name: "Frutos Rojos",
     size: "360 ml",
     description: "Con fresa, mora, arándano y frambuesa.",
@@ -253,7 +253,7 @@ export const products: Product[] = [
   {
     id: "kefir-pina",
     categoryId: "kefir",
-    line: "fermento",
+    line: "ritual",
     name: "Piña",
     size: "360 ml",
     description: "Con piña.",

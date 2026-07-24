@@ -17,7 +17,7 @@ Bebida fermentada viva, cultivos naturales, sin pasteurizar. 20 calorías por po
 
 ---
 
-## Kéfir (Fermento) — 360 ml
+## Kéfir (The Ritual) — 360 ml
 
 Bebida fermentada con cultivos vivos, 100% natural y orgánico. Con probióticos, fácil de digerir, fortalece el sistema inmunológico. Agitar bien antes de disfrutar. Mantener refrigerado.
 

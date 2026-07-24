@@ -8,15 +8,15 @@ Sitio web de **Fermento / The Ritual** (Viva Terra Group S.A., Managua, Nicaragu
 
 - **Fermento** (fermentados):
   - Kombucha viva sin pasteurizar, 500ml — Jamaica, Jengibre, Café, Piña.
-  - Kéfir con cultivos vivos, 360ml — Plain, Mango, Frutos Rojos, Piña.
   - Cold Brew (café de Dipilto), 375ml — clásico, Infusión Naranja y Miel.
-- **The Ritual** (funcionales/naturales):
+- **The Ritual** (funcionales/naturales; incluye Kéfir, que vive acá por el branding "THE RITUAL" del packaging real aunque sea un fermentado):
+  - Kéfir con cultivos vivos, 360ml — Plain, Mango, Frutos Rojos, Piña.
   - Agua de Coco 100% natural, 330g.
   - Shots, 75ml — Red Vitality, Ginger Boost, Green Detox, Turmeric Defense.
   - Dessert Jars, 300g — Tiramisú, Chocolate Fudge, Tres Leches, Red Velvet.
   - *Próximamente*: **Panes sin gluten** — solo teaser editorial (`bread-teaser.tsx`), NO es categoría de catálogo: sin SKUs ni precios, no forzar `ProductCard`.
 
-Ojo: no existe "Kombucha Café" — el café es la línea **Cold Brew**. Los precios reales aún no están definidos (todos con `// TODO: precio real`).
+Ojo: existe **Kombucha Café** (kombucha de infusión de café) y además la línea **Cold Brew** (café de Dipilto) — son productos distintos, no confundir. Precios cargados en C$ desde el catálogo de marca; solo Cold Brew clásico sigue `null` (no está en el catálogo).
 
 Sitio simple pero de diseño de alto impacto: catálogo por sabor, carrito de pedido y contacto. No es una app compleja — no hay login, ni dashboard, ni base de datos transaccional, ni pagos online. Prioridad: verse premium, cargar rápido, funcionar perfecto en mobile.
 

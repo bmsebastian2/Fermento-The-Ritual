@@ -53,8 +53,8 @@ export const catalogSections: {
   line: "fermento" | "ritual";
 }[] = [
   { id: "cat-kombucha", label: "Kombucha", line: "fermento" },
-  { id: "cat-kefir", label: "Kéfir", line: "fermento" },
   { id: "cat-cold-brew", label: "Cold Brew", line: "fermento" },
+  { id: "cat-kefir", label: "Kéfir", line: "ritual" },
   { id: "cat-agua-de-coco", label: "Agua de Coco", line: "ritual" },
   { id: "cat-shots", label: "Shots", line: "ritual" },
   { id: "cat-postres", label: "Postres", line: "ritual" },
