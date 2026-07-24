@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { checkout } from "@/lib/checkout";
-import { deliveryMethods } from "@/lib/site";
+import { checkout, hasPendingPrice, subtotal } from "@/lib/checkout";
+import { deliveryMethods, formatPrice } from "@/lib/site";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { CartItem } from "@/components/cart/cart-item";
@@ -139,6 +139,15 @@ export function CartDrawer() {
           <footer className="shrink-0 border-t border-ink/10 bg-cream px-6 pb-6 pt-5">
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
+                Subtotal
+              </span>
+              <span className="text-xl font-semibold tabular-nums text-forest-deep">
+                {formatPrice(subtotal(items))}
+                {hasPendingPrice(items) && "*"}
+              </span>
+            </div>
+            <div className="mt-1 flex items-baseline justify-between gap-3">
+              <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
                 {count} {count === 1 ? "unidad" : "unidades"}
               </span>
               <button
@@ -195,8 +204,10 @@ export function CartDrawer() {
             </fieldset>
 
             <p className="mt-3 text-xs leading-relaxed text-ink/55">
-              Te confirmamos precio y disponibilidad por WhatsApp al recibir el
-              pedido.
+              El subtotal no incluye envío. Te confirmamos el total con envío y la
+              disponibilidad por WhatsApp.
+              {hasPendingPrice(items) &&
+                " Los ítems con * tienen precio a confirmar."}
             </p>
 
             {/* Mismo lenguaje que ButtonLink (variant primary), como <button>:

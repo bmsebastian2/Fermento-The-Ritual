@@ -1,7 +1,7 @@
 import type { CategoryId, Product } from "@/lib/data/products";
 import { getCategory } from "@/lib/data/products";
 import type { DeliveryMethodId } from "@/lib/site";
-import { getDeliveryMethod, whatsappUrl } from "@/lib/site";
+import { formatPrice, getDeliveryMethod, whatsappUrl } from "@/lib/site";
 
 /**
  * Capa de checkout — punto único por donde sale un pedido.
@@ -11,10 +11,11 @@ import { getDeliveryMethod, whatsappUrl } from "@/lib/site";
  * adelante alcanza con escribir otro `CheckoutProvider` y cambiar la constante
  * `checkout` del final del archivo — el drawer y el provider no se tocan.
  *
- * PRECIOS: esta capa no lee `price` a propósito. Ningún monto está confirmado
- *          (todos `null` en products.ts) y el total se cotiza por WhatsApp.
- *          Un provider de pasarela sí necesitará precios: ese es el momento de
- *          cargarlos, no antes.
+ * PRECIOS: en córdobas (C$), desde products.ts. El mensaje incluye el precio de
+ *          cada línea y el subtotal de productos. El total FINAL (con envío) lo
+ *          confirma Fermento por WhatsApp: la tarifa de delivery no está definida.
+ *          Ítems sin precio (`null`, p. ej. Cold Brew clásico) salen como "a
+ *          confirmar" y no suman al subtotal.
  */
 
 export interface CheckoutItem {
@@ -62,19 +63,41 @@ export function totalUnits(items: CheckoutItem[]): number {
   return items.reduce((sum, item) => sum + item.qty, 0);
 }
 
+/** Total de una línea (precio × cantidad), o `null` si el precio no está fijado. */
+export function lineTotal({ product, qty }: CheckoutItem): number | null {
+  return product.price == null ? null : product.price * qty;
+}
+
+/** Subtotal de productos con precio confirmado (en C$). Ignora los `null`. */
+export function subtotal(items: CheckoutItem[]): number {
+  return items.reduce((sum, item) => sum + (lineTotal(item) ?? 0), 0);
+}
+
+/** `true` si algún ítem no tiene precio fijado (subtotal parcial). */
+export function hasPendingPrice(items: CheckoutItem[]): boolean {
+  return items.some(({ product }) => product.price == null);
+}
+
 /**
- * Arma el texto del pedido. Una línea por ítem (cantidad, nombre y tamaño),
- * pensada para leerse sin wrap en la pantalla de un teléfono. Cierra pidiendo
- * la cotización: el total en córdobas lo confirma Fermento, no el sitio.
+ * Arma el texto del pedido. Una línea por ítem (cantidad, nombre, tamaño y
+ * precio de línea), pensada para leerse sin wrap en la pantalla de un teléfono.
+ * Cierra con el subtotal de productos; el total con envío lo confirma Fermento.
  */
 export function buildOrderMessage(
   items: CheckoutItem[],
   delivery: DeliveryMethodId,
 ): string {
-  const lines = items.map(
-    ({ product, qty }) => `• ${qty}× ${productLabel(product)} — ${product.size}`,
-  );
+  const lines = items.map((item) => {
+    const { product, qty } = item;
+    const total = lineTotal(item);
+    const amount = total == null ? "precio a confirmar" : formatPrice(total);
+    return `• ${qty}× ${productLabel(product)} — ${product.size} — ${amount}`;
+  });
   const units = totalUnits(items);
+  const pending = hasPendingPrice(items);
+  const subtotalLine = `Subtotal: ${formatPrice(subtotal(items))}${
+    pending ? " (+ ítems a confirmar)" : ""
+  } · ${units} ${units === 1 ? "unidad" : "unidades"}`;
   const method = getDeliveryMethod(delivery);
   // "Delivery a domicilio (costo a confirmar)" / "Retiro en persona".
   const deliveryLine = method
@@ -86,9 +109,9 @@ export function buildOrderMessage(
     "",
     ...lines,
     "",
-    `Total: ${units} ${units === 1 ? "unidad" : "unidades"}`,
+    subtotalLine,
     ...(deliveryLine ? [deliveryLine] : []),
-    "¿Me confirman precio y disponibilidad?",
+    "¿Me confirman el total con envío y la disponibilidad?",
   ].join("\n");
 }
 

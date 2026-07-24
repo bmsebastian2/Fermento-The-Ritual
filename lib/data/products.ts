@@ -2,12 +2,14 @@
  * Catálogo Fermento & The Ritual.
  * Fuente: productos_fermento_the_ritual.md (copy textual del material de marca).
  *
- * PRECIOS: ninguno confirmado todavía → `price: null` con `// TODO: precio real`.
- *          No inventar montos.
+ * PRECIOS: en córdobas (C$), tomados del catálogo de marca. Se muestran en la
+ *          UI (card, modal y carrito). Cold Brew clásico sigue `null` (no está
+ *          en el catálogo) → la UI muestra "A confirmar" y no lo suma al subtotal.
+ *          No inventar montos: lo que falte queda `null`.
  * IMÁGENES: `image` apunta a una foto LIMPIA de producto (botella/frasco/lata
  *           recortada de las tomas reales en /assets/photos, sin texto de lámina).
- *           Kombucha (salvo Mango de temporada), Kéfir, Cold Brew, Postres y Agua
- *           de Coco ya tienen foto. Lo que quede en `null` cae a placeholder por
+ *           Kombucha, Kéfir, Cold Brew, Postres y Agua de Coco ya tienen foto.
+ *           Lo que quede en `null` cae a placeholder por
  *           color de acento (ver `productImage()` en lib/site.ts). Los Shots usan
  *           su propia botella ilustrada (shots-feature.tsx), no `image`.
  * ACENTO:   cada producto referencia un token de color de globals.css
@@ -91,7 +93,7 @@ export interface Product {
   image: string | null;
   /** Producto de temporada. */
   seasonal?: boolean;
-  price: number | null; // TODO: precio real
+  price: number | null; // C$; null = pendiente (UI muestra "A confirmar")
 }
 
 export const categories: Category[] = [
@@ -99,7 +101,7 @@ export const categories: Category[] = [
     id: "kombucha",
     line: "fermento",
     name: "Kombucha",
-    size: "375 ml",
+    size: "500 ml",
     blurb:
       "Bebida fermentada viva, cultivos naturales, sin pasteurizar. 20 calorías por porción.",
     care: "Mantener refrigerado · No agitar · Abrir con cuidado.",
@@ -157,56 +159,55 @@ export const products: Product[] = [
     categoryId: "kombucha",
     line: "fermento",
     name: "Jamaica",
-    size: "375 ml",
+    size: "500 ml",
     description:
       "Infusión de jamaica, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar.",
     notes: ["Infusión de jamaica", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "jamaica",
     image: "/products/kombucha-jamaica.webp",
-    price: null, // TODO: precio real
+    price: 145,
   },
   {
     id: "kombucha-jengibre",
     categoryId: "kombucha",
     line: "fermento",
     name: "Jengibre",
-    size: "375 ml",
+    size: "500 ml",
     description:
       "Jengibre fresco, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar.",
     notes: ["Jengibre fresco", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "jengibre",
     image: "/products/kombucha-jengibre.webp",
-    price: null, // TODO: precio real
+    price: 145,
   },
   {
-    id: "kombucha-mango",
+    id: "kombucha-cafe",
     categoryId: "kombucha",
     line: "fermento",
-    name: "Mango",
-    size: "375 ml",
+    name: "Café",
+    size: "500 ml",
     description:
-      "Pulpa de mango, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar.",
-    notes: ["Pulpa de mango", "Azúcar de caña", "SCOBY"],
-    badges: ["SIN PASTEURIZAR", "TEMPORADA"],
-    accent: "mango",
-    image: null,
-    seasonal: true,
-    price: null, // TODO: precio real
+      "Infusión de café, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar.",
+    notes: ["Infusión de café", "Azúcar de caña", "SCOBY"],
+    badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
+    accent: "cafe",
+    image: "/products/kombucha-cafe.webp",
+    price: 145,
   },
   {
     id: "kombucha-pina",
     categoryId: "kombucha",
     line: "fermento",
     name: "Piña",
-    size: "375 ml",
+    size: "500 ml",
     description: "Piña, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar.",
     notes: ["Piña", "Azúcar de caña", "SCOBY"],
     badges: ["SIN PASTEURIZAR", "CULTIVOS VIVOS"],
     accent: "pina",
     image: "/products/kombucha-pina.webp",
-    price: null, // TODO: precio real
+    price: 145,
   },
 
   // ── Kéfir (Fermento) ─────────────────────────────────────────────────
@@ -221,7 +222,7 @@ export const products: Product[] = [
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "kefir",
     image: "/products/kefir-plain.webp",
-    price: null, // TODO: precio real
+    price: 137,
   },
   {
     id: "kefir-mango",
@@ -234,7 +235,7 @@ export const products: Product[] = [
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "mango",
     image: "/products/kefir-mango.webp",
-    price: null, // TODO: precio real
+    price: 167,
   },
   {
     id: "kefir-frutos-rojos",
@@ -247,7 +248,7 @@ export const products: Product[] = [
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "berry",
     image: "/products/kefir-frutos-rojos.webp",
-    price: null, // TODO: precio real
+    price: 167,
   },
   {
     id: "kefir-pina",
@@ -260,7 +261,7 @@ export const products: Product[] = [
     badges: ["CON PROBIÓTICOS", "100% NATURAL"],
     accent: "pina",
     image: "/products/kefir-pina.webp",
-    price: null, // TODO: precio real
+    price: 167,
   },
 
   // ── Cold Brew (Fermento) ─────────────────────────────────────────────
@@ -289,7 +290,7 @@ export const products: Product[] = [
     badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
     accent: "cafe",
     image: "/products/cold-brew-naranja-miel.webp",
-    price: null, // TODO: precio real
+    price: 146.16,
   },
 
   // ── Agua de Coco (The Ritual) ────────────────────────────────────────
@@ -305,7 +306,7 @@ export const products: Product[] = [
     badges: ["100% NATURAL", "SIN AZÚCAR AÑADIDA"],
     accent: "coco",
     image: "/products/agua-de-coco.webp",
-    price: null, // TODO: precio real
+    price: 147.5,
   },
 
   // ── Shots (The Ritual) ───────────────────────────────────────────────
@@ -326,7 +327,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "beet",
     image: null,
-    price: null, // TODO: precio real
+    price: 165,
   },
   {
     id: "shot-ginger-boost",
@@ -345,7 +346,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "jengibre",
     image: null,
-    price: null, // TODO: precio real
+    price: 165,
   },
   {
     id: "shot-green-detox",
@@ -364,7 +365,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "green",
     image: null,
-    price: null, // TODO: precio real
+    price: 137,
   },
   {
     id: "shot-tumeric-defense",
@@ -383,7 +384,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "pina",
     image: null,
-    price: null, // TODO: precio real
+    price: 137,
   },
 
   // ── Dessert Jars (The Ritual) ────────────────────────────────────────
@@ -400,7 +401,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
     image: "/products/postre-tiramisu.webp",
-    price: null, // TODO: precio real
+    price: 219,
   },
   {
     id: "postre-chocolate-fudge",
@@ -415,7 +416,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
     image: "/products/postre-chocolate-fudge.webp",
-    price: null, // TODO: precio real
+    price: 219,
   },
   {
     id: "postre-tres-leches",
@@ -430,7 +431,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "dessert",
     image: "/products/postre-tres-leches.webp",
-    price: null, // TODO: precio real
+    price: 219,
   },
   {
     id: "postre-red-velvet",
@@ -445,7 +446,7 @@ export const products: Product[] = [
     badges: ["SIN CONSERVANTES", "ARTESANAL"],
     accent: "jamaica",
     image: "/products/postre-red-velvet.webp",
-    price: null, // TODO: precio real
+    price: 219,
   },
 ];
 

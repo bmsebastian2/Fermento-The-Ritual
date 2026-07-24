@@ -74,3 +74,14 @@ export function accentVar(accent: Accent): string {
 export function productImage(product: Pick<Product, "image">): string | null {
   return product.image;
 }
+
+/**
+ * Formatea un precio en córdobas (C$) para la UI. Entero → "C$ 145"; con
+ * decimales → dos dígitos ("C$ 147.50", "C$ 146.16"). `null` (precio aún no
+ * confirmado, p. ej. Cold Brew clásico) → "A confirmar".
+ */
+export function formatPrice(price: number | null): string {
+  if (price == null) return "A confirmar";
+  const amount = Number.isInteger(price) ? String(price) : price.toFixed(2);
+  return `C$ ${amount}`;
+}

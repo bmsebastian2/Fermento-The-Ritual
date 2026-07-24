@@ -1,8 +1,8 @@
 "use client";
 
 import type { CheckoutItem } from "@/lib/checkout";
-import { productLabel } from "@/lib/checkout";
-import { accentVar } from "@/lib/site";
+import { lineTotal, productLabel } from "@/lib/checkout";
+import { accentVar, formatPrice } from "@/lib/site";
 import { ProductMedia } from "@/components/product-card/product-media";
 import { useCart } from "@/components/cart/cart-provider";
 
@@ -12,8 +12,10 @@ import { useCart } from "@/components/cart/cart-provider";
  * de etiqueta. La media sale de ProductMedia, así los Shots (sin `image`) caen
  * solos al placeholder por acento en vez de mostrar un hueco.
  *
- * PRECIOS: la fila no muestra monto porque no hay ninguno confirmado. En su
- *          lugar declara "Precio a confirmar" — el total se cotiza por WhatsApp.
+ * PRECIOS: la fila muestra el total de la línea (precio × cantidad) en C$, con
+ *          el precio unitario como nota cuando hay más de una unidad. Un ítem sin
+ *          precio fijado (`null`) declara "A confirmar". El total con envío se
+ *          cotiza por WhatsApp.
  */
 
 /** Botón del stepper — cuadrado, idioma de etiqueta (sin radius). */
@@ -75,7 +77,22 @@ export function CartItem({ item }: { item: CheckoutItem }) {
           {product.size}
         </p>
 
-        <p className="mt-1 text-xs italic text-ink/45">Precio a confirmar</p>
+        <p className="mt-1 text-sm font-semibold tabular-nums text-forest-deep">
+          {product.price == null ? (
+            <span className="text-xs font-normal italic text-ink/45">
+              A confirmar
+            </span>
+          ) : (
+            <>
+              {formatPrice(lineTotal(item))}
+              {qty > 1 && (
+                <span className="ml-1.5 text-xs font-normal text-ink/45">
+                  ({formatPrice(product.price)} c/u)
+                </span>
+              )}
+            </>
+          )}
+        </p>
 
         {/* Cantidad + quitar */}
         <div className="mt-auto flex items-center justify-between gap-3 pt-2">

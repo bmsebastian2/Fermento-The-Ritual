@@ -4,16 +4,16 @@
 
 ---
 
-## Kombucha (Fermento) — 375 ml
+## Kombucha (Fermento) — 500 ml
 
 Bebida fermentada viva, cultivos naturales, sin pasteurizar. 20 calorías por porción. Mantener refrigerado, no agitar, abrir con cuidado.
 
 | Producto | Contenido | Descripción |
 |---|---|---|
-| Kombucha Jamaica | 375 ml | Infusión de jamaica, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
-| Kombucha Jengibre | 375 ml | Jengibre fresco, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
-| Kombucha Mango *(producto de temporada)* | 375 ml | Pulpa de mango, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
-| Kombucha Piña | 375 ml | Piña, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
+| Kombucha Jamaica | 500 ml | Infusión de jamaica, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
+| Kombucha Jengibre | 500 ml | Jengibre fresco, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
+| Kombucha Café | 500 ml | Infusión de café, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
+| Kombucha Piña | 500 ml | Piña, azúcar de caña y SCOBY. Kombucha viva sin pasteurizar. |
 
 ---
 

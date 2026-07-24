@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Product } from "@/lib/data/products";
 import { getCategory, lines } from "@/lib/data/products";
-import { accentVar, whatsappUrl } from "@/lib/site";
+import { accentVar, formatPrice, whatsappUrl } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
@@ -179,6 +179,15 @@ export function ProductModal({
           {/* Cantidad + CTA. Agregar es la acción principal; el WhatsApp
               directo queda como salida secundaria para pedir solo este. */}
           <div className="mt-auto flex flex-col gap-3 border-t border-ink/10 pt-5">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-2xl font-semibold tabular-nums text-forest-deep">
+                {formatPrice(product.price)}
+              </span>
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
+                {product.size}
+              </span>
+            </div>
+
             <div className="flex items-stretch gap-3">
               <div className="flex items-center border border-ink/15">
                 <StepButton
@@ -234,20 +243,15 @@ export function ProductModal({
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <ButtonLink
-                href={whatsappUrl(orderMessage)}
-                variant="outline"
-                external
-                className="px-4 py-2 text-xs"
-              >
-                <WhatsAppIcon className="h-4 w-4" />
-                Pedí solo este
-              </ButtonLink>
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-ink/55">
-                {product.size}
-              </span>
-            </div>
+            <ButtonLink
+              href={whatsappUrl(orderMessage)}
+              variant="outline"
+              external
+              className="self-start px-4 py-2 text-xs"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Pedí solo este
+            </ButtonLink>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { Product } from "@/lib/data/products";
-import { accentVar } from "@/lib/site";
+import { accentVar, formatPrice } from "@/lib/site";
 import { Badge } from "@/components/ui/badge";
 import { ProductMedia } from "@/components/product-card/product-media";
 import { useProductDetail } from "@/components/product-detail/product-detail-provider";
@@ -74,10 +74,15 @@ export function ProductCard({ product }: { product: Product }) {
         )}
 
         {/* Pie: tamaño + CTA por producto (elevado sobre el overlay). */}
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-ink/10 pt-3">
-          <span className="text-xs font-medium uppercase tracking-[0.1em] text-ink/55">
-            {product.size}
-          </span>
+        <div className="mt-auto flex items-end justify-between gap-2 border-t border-ink/10 pt-3">
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <span className="text-sm font-semibold tabular-nums text-forest-deep">
+              {formatPrice(product.price)}
+            </span>
+            <span className="text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-ink/45">
+              {product.size}
+            </span>
+          </div>
           <AddToCartButton product={product} variant="compact" />
         </div>
       </div>
