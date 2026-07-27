@@ -267,35 +267,35 @@ export const products: Product[] = [
   },
 
   // ── Cold Brew (Fermento) ─────────────────────────────────────────────
-  {
-    id: "cold-brew-clasico",
-    categoryId: "cold-brew",
-    line: "fermento",
-    name: "Cold Brew",
-    size: "375 ml",
-    description: "Acidez baja. Notas achocolatadas, mandarina y frutos secos.",
-    notes: ["Achocolatadas", "Mandarina", "Frutos secos", "Acidez baja"],
-    badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
-    accent: "cafe",
-    image: "/products/cold-brew-clasico.webp",
-    price: null, // TODO: precio real
-  },
   // Retirado temporalmente del catálogo (2026-07-27). Para reactivarlo basta
-  // descomentar: la foto sigue en /public/products/cold-brew-naranja-miel.webp.
+  // descomentar: la foto sigue en /public/products/cold-brew-clasico.webp.
   // {
-  //   id: "cold-brew-naranja-miel",
+  //   id: "cold-brew-clasico",
   //   categoryId: "cold-brew",
   //   line: "fermento",
-  //   name: "Infusión Naranja y Miel",
+  //   name: "Cold Brew",
   //   size: "375 ml",
-  //   description:
-  //     "Acidez balanceada. Notas cítricas, miel, semillas de jícaro y cacao.",
-  //   notes: ["Cítricas", "Miel", "Semillas de jícaro", "Cacao"],
+  //   description: "Acidez baja. Notas achocolatadas, mandarina y frutos secos.",
+  //   notes: ["Achocolatadas", "Mandarina", "Frutos secos", "Acidez baja"],
   //   badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
   //   accent: "cafe",
-  //   image: "/products/cold-brew-naranja-miel.webp",
-  //   price: 146.16,
+  //   image: "/products/cold-brew-clasico.webp",
+  //   price: null, // TODO: precio real
   // },
+  {
+    id: "cold-brew-naranja-miel",
+    categoryId: "cold-brew",
+    line: "fermento",
+    name: "Infusión Naranja y Miel",
+    size: "375 ml",
+    description:
+      "Café de especialidad, 12 horas de extracción, hecho artesanalmente. Notas cítricas, miel y cacao.",
+    notes: ["Cítricas", "Miel", "Cacao"],
+    badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
+    accent: "cafe",
+    image: "/products/cold-brew-naranja-miel.webp",
+    price: 146.16,
+  },
 
   // ── Agua de Coco (The Ritual) ────────────────────────────────────────
   {

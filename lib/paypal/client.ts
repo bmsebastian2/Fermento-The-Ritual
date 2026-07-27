@@ -8,6 +8,31 @@
 const PAYPAL_API_BASE_URL =
   process.env.PAYPAL_API_BASE_URL ?? "https://api-m.sandbox.paypal.com";
 
+/**
+ * En producción, el default a sandbox de arriba puede enmascarar una env var
+ * olvidada: el sitio "funcionaría" pero cobrando contra sandbox con
+ * credenciales live. Falla ruidoso en vez de arrancar así.
+ */
+function assertProductionConfig(): void {
+  if (process.env.NODE_ENV !== "production") return;
+
+  const missing: string[] = [];
+  if (!process.env.PAYPAL_API_BASE_URL) missing.push("PAYPAL_API_BASE_URL");
+  if (!process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID) missing.push("NEXT_PUBLIC_PAYPAL_CLIENT_ID");
+  if (!process.env.PAYPAL_CLIENT_SECRET) missing.push("PAYPAL_CLIENT_SECRET");
+  if (missing.length > 0) {
+    throw new Error(
+      `Configuración de PayPal incompleta en producción. Faltan: ${missing.join(", ")}.`,
+    );
+  }
+  if (PAYPAL_API_BASE_URL.includes("sandbox")) {
+    throw new Error(
+      "PAYPAL_API_BASE_URL apunta a sandbox en producción. Debe ser https://api-m.paypal.com.",
+    );
+  }
+}
+assertProductionConfig();
+
 function getCredentials(): { clientId: string; clientSecret: string } {
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
   const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
