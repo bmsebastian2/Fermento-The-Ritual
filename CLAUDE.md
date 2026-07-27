@@ -95,3 +95,13 @@ Componentes chicos y con un solo propósito. No mezclar lógica de datos con pre
 - Copy final de descripciones — se puede usar el texto de la lámina de marca como base, pero flaggear si es borrador.
 - Logos: ya hay assets limpios en `public/brand/` (`logo-vectorial.png`, `icon-fermento.svg`, `icon-ritual.svg`, `logo-letterpress.jpg`), pero **ningún componente los usa todavía** — el nav sigue con el nombre en texto. Decidir con el usuario antes de integrarlos.
 - Imágenes de producto: **casi todo el catálogo ya tiene foto WebP recortada** en `public/products/` (las 4 kombucha, todo el kéfir, ambos cold brew, agua de coco, los 4 postres). `image` en `products.ts` es la fuente de verdad; `null` → placeholder por color de acento (hoy ningún producto de catálogo cae ahí). Los Shots no usan `image`: renderizan botella ilustrada (`ui/shot-bottle.tsx` vía `shots-feature.tsx`) + fotos de ingredientes `shot-*-ingredients.webp`. Los `shot-*.webp` de botella existen en `/public/products` pero no se referencian aún. El material fuente (flyers y fotos) está en `/assets/` (labels y photos), fuera de `/public`.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

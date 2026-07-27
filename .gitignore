@@ -44,3 +44,4 @@ next-env.d.ts
 # Scratch de screenshots (Claude)
 _shot.js
 _*.png
+graphify-out/

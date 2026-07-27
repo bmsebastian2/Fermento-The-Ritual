@@ -1,22 +1,11 @@
-import Image from "next/image";
 import { Bubbles } from "@/components/hero/bubbles";
 import { PalmFrond } from "@/components/hero/palm-frond";
-import { ProductCallouts, type Callout } from "@/components/hero/product-callouts";
+import { BottleCluster } from "@/components/hero/bottle-cluster";
 import { StampLabel } from "@/components/ui/stamp-label";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WhatsAppIcon, ArrowDownIcon } from "@/components/ui/icons";
 import { whatsappUrl, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/site";
-
-// Virtudes del Agua de Coco — copy respaldado por la lámina de producto
-// (productos_fermento_the_ritual.md): "100% natural, sin aditivos ni azúcar
-// añadida. Orgánica". Anclas en % sobre la lata; se afinan visualmente.
-const COCO_CALLOUTS: Callout[] = [
-  { label: "100% Natural", anchor: { x: 35, y: 33 }, tip: { x: 12, y: 27 }, side: "left" },
-  { label: "Orgánica", anchor: { x: 37, y: 63 }, tip: { x: 12, y: 71 }, side: "left" },
-  { label: "Sin aditivos", anchor: { x: 65, y: 40 }, tip: { x: 88, y: 33 }, side: "right" },
-  { label: "Sin azúcar añadida", anchor: { x: 63, y: 66 }, tip: { x: 88, y: 73 }, side: "right" },
-];
 
 export function Hero() {
   return (
@@ -94,76 +83,37 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Columna de producto */}
+        {/* Columna de producto: familia de botellas, no un envase único. */}
         <div
-          className="hero-in relative mx-auto w-full max-w-sm lg:max-w-md"
+          className="hero-in relative mx-auto w-full max-w-md lg:max-w-xl"
           style={{ animationDelay: "260ms" }}
         >
           {/* Frondas de palma — capa de profundidad botánica, abren desde las
-              esquinas superiores por detrás de la botella (lenguaje de marca). */}
+              esquinas superiores por detrás del grupo (lenguaje de marca). */}
           <PalmFrond
             className="pointer-events-none absolute -z-10 text-forest/25"
             style={{
-              top: "-11%",
-              left: "-20%",
-              width: "58%",
+              top: "-9%",
+              left: "-14%",
+              width: "44%",
               transform: "rotate(-18deg)",
             }}
           />
           <PalmFrond
             className="pointer-events-none absolute -z-10 text-coco/40"
             style={{
-              top: "-15%",
-              right: "-18%",
-              width: "50%",
+              top: "-12%",
+              right: "-12%",
+              width: "38%",
               transform: "scaleX(-1) rotate(-14deg)",
             }}
           />
 
-          {/* Botella: leve rotación + sombra con dirección de luz (arriba-izq →
-              proyecta abajo-der), en capas para dar volumen real. Al hacer
-              hover/tap aparecen leader lines con las virtudes del producto. */}
-          <ProductCallouts
-            accent="var(--color-coco)"
-            toggleLabel="Mostrar las propiedades del Agua de Coco"
-            callouts={COCO_CALLOUTS}
-          >
-            <div
-              className="overflow-hidden rounded-[4px]"
-              style={{
-                transform: "rotate(-2deg)",
-                boxShadow:
-                  "26px 36px 64px -20px color-mix(in srgb, var(--color-forest-deep) 42%, transparent), 10px 14px 26px -10px color-mix(in srgb, var(--color-forest-deep) 30%, transparent)",
-              }}
-            >
-              <Image
-                src="/products/agua-de-coco.webp"
-                alt="Lata de Agua de Coco The Ritual sobre madera, con cocos frescos"
-                width={582}
-                height={838}
-                priority
-                className="h-auto w-full object-cover"
-              />
-            </div>
-          </ProductCallouts>
-
-          {/* Sombra de contacto: apoya la botella sobre una superficie y
-              elimina la sensación de flotar contra la crema. */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-8 -z-10 h-6 rounded-[100%] blur-xl"
-            style={{
-              bottom: "2.75rem",
-              background:
-                "color-mix(in srgb, var(--color-forest-deep) 50%, transparent)",
-            }}
-          />
+          <BottleCluster />
 
           <div className="mt-3 flex items-center justify-between">
-            <Badge color="var(--color-coco)">The Ritual · Agua de Coco</Badge>
-            <Badge color="var(--color-ink)" className="opacity-60">
-              330 g
-            </Badge>
+            <Badge color="var(--color-forest)">Fermento</Badge>
+            <Badge color="var(--color-coco)">The Ritual</Badge>
           </div>
         </div>
       </div>
