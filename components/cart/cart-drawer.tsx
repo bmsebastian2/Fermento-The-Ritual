@@ -1,33 +1,38 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { checkout, hasPendingPrice, subtotal } from "@/lib/checkout";
-import { deliveryMethods, formatPrice } from "@/lib/site";
 import { StampLabel } from "@/components/ui/stamp-label";
-import { WhatsAppIcon } from "@/components/ui/icons";
-import { CartItem } from "@/components/cart/cart-item";
+import { CartBasketStep } from "@/components/cart/cart-basket-step";
+import { CartCheckoutStep } from "@/components/cart/cart-checkout-step";
 import { useCart } from "@/components/cart/cart-provider";
 
 /**
- * Panel lateral del pedido.
+ * Panel lateral del pedido — shell del `<dialog>` nativo.
  *
- * Usa el mismo `<dialog>` nativo que el detalle de producto: foco atrapado,
+ * Usa el mismo `<dialog>` que el detalle de producto: foco atrapado,
  * `aria-modal` y devolución de foco los aporta el elemento, no código nuestro.
- * Acá solo agregamos la animación de entrada/salida, el cierre por backdrop y
- * el scroll lock. El fade del fondo lo hereda de la regla `dialog::backdrop`
- * de globals.css, atada a `[data-visible="true"]`.
+ * Acá agregamos la animación de entrada/salida, el cierre por backdrop, el
+ * scroll lock, y el manejo de foco *entre* los dos pasos (Canasta/Checkout) —
+ * sin tocar el foco atrapado nativo, solo movemos dónde cae dentro de él.
  *
- * El drawer no conoce WhatsApp: delega en `checkout.submit()`.
+ * El shell no conoce ítems, entrega ni métodos de pago: eso vive en
+ * `CartBasketStep` (Paso 1) y `CartCheckoutStep` (Paso 2), que reciben el
+ * estado de checkout como props para sobrevivir el swap entre pasos.
  */
 
 /** Duración de la animación; debe coincidir con la clase de transición. */
 const EXIT_MS = 300;
 
 export function CartDrawer() {
-  const { items, count, delivery, setDelivery, isOpen, closeCart, clear } =
-    useCart();
+  const { items, isOpen, closeCart, clear } = useCart();
   const [visible, setVisible] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
+  const [providerId, setProviderId] = useState<string>();
+  const [checkoutError, setCheckoutError] = useState<string>();
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const continueButtonRef = useRef<HTMLButtonElement>(null);
+  const checkoutHeadingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -38,18 +43,57 @@ export function CartDrawer() {
     }
   }, [isOpen]);
 
+  // Mueve el foco al pasar de paso, sin pelear con el foco atrapado nativo del
+  // dialog (que ya está abierto en ambos casos). La guarda evita disparar en
+  // el mount inicial y en el reset defensivo de `step` que ocurre al cerrar
+  // (ese reset pasa con el dialog ya cerrado, no hay nada que enfocar).
+  useEffect(() => {
+    if (!dialogRef.current?.open) return;
+    if (step === 2) checkoutHeadingRef.current?.focus();
+    else continueButtonRef.current?.focus();
+  }, [step]);
+
+  // Si el carrito queda vacío estando en Checkout (ej. un pago de PayPal
+  // exitoso ya vació el carrito vía handleCheckoutSuccess), no dejar un Paso 2
+  // fantasma: cae a Canasta (el ternario de abajo igual prioriza la vista de
+  // éxito o la vacía por sobre `step`, esto solo sanea el estado subyacente).
+  useEffect(() => {
+    if (items.length === 0 && step === 2) setStep(1);
+  }, [items.length, step]);
+
   const close = useCallback(() => {
     const dialog = dialogRef.current;
     const finish = () => {
       dialog?.close();
       document.body.style.overflow = "";
       closeCart();
+      // El próximo pedido empieza limpio: sin paso, error ni éxito heredado.
+      setStep(1);
+      setCheckoutError(undefined);
+      setCheckoutSuccess(false);
     };
     setVisible(false);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) finish();
     else window.setTimeout(finish, EXIT_MS);
   }, [closeCart]);
+
+  const goToCheckout = useCallback(() => setStep(2), []);
+
+  // Volver a editar la canasta abandona cualquier intento de pago fallido.
+  const goBack = useCallback(() => {
+    setStep(1);
+    setCheckoutError(undefined);
+  }, []);
+
+  // Pago confirmado server-side (capture COMPLETED): a diferencia de WhatsApp
+  // (que solo abre un chat, nunca confirma nada), acá sí sabemos que el pedido
+  // se completó — vaciar el carrito evita que alguien pague dos veces sin querer.
+  const handleCheckoutSuccess = useCallback(() => {
+    setCheckoutError(undefined);
+    setCheckoutSuccess(true);
+    clear();
+  }, [clear]);
 
   return (
     <dialog
@@ -64,7 +108,7 @@ export function CartDrawer() {
       onClick={(e) => {
         if (e.target === dialogRef.current) close();
       }}
-      className={`fixed inset-y-0 right-0 left-auto m-0 h-full max-h-none w-[min(27rem,100vw)] max-w-none bg-cream p-0 text-ink shadow-2xl backdrop:bg-transparent transition-transform duration-300 ease-out ${
+      className={`fixed inset-y-0 right-0 left-auto m-0 h-full max-h-none w-[min(32rem,100vw)] max-w-none bg-cream p-0 text-ink shadow-2xl backdrop:bg-transparent transition-transform duration-300 ease-out ${
         visible ? "translate-x-0" : "translate-x-full"
       }`}
     >
@@ -104,8 +148,28 @@ export function CartDrawer() {
           </div>
         </header>
 
-        {/* ── Ítems ──────────────────────────────────────────────────── */}
-        {items.length === 0 ? (
+        {checkoutSuccess ? (
+          <div
+            role="status"
+            className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rotate-45 bg-forest" />
+            <p className="font-display text-2xl leading-tight text-forest-deep">
+              ¡Listo! Tu pago se confirmó
+            </p>
+            <p className="max-w-[22rem] text-sm leading-relaxed text-ink/60">
+              Te vamos a escribir para coordinar la entrega. Gracias por tu
+              pedido 🌱
+            </p>
+            <button
+              type="button"
+              onClick={close}
+              className="mt-2 text-sm font-semibold text-forest underline decoration-1 underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest"
+            >
+              Cerrar
+            </button>
+          </div>
+        ) : items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
             <span
               aria-hidden="true"
@@ -126,114 +190,21 @@ export function CartDrawer() {
               Ver el catálogo
             </button>
           </div>
+        ) : step === 2 ? (
+          <CartCheckoutStep
+            onBack={goBack}
+            headingRef={checkoutHeadingRef}
+            providerId={providerId}
+            setProviderId={setProviderId}
+            checkoutError={checkoutError}
+            setCheckoutError={setCheckoutError}
+            onCheckoutSuccess={handleCheckoutSuccess}
+          />
         ) : (
-          <ul className="flex-1 overflow-y-auto px-6 py-5">
-            {items.map((item) => (
-              <CartItem key={item.product.id} item={item} />
-            ))}
-          </ul>
-        )}
-
-        {/* ── Pie: unidades + envío ──────────────────────────────────── */}
-        {items.length > 0 && (
-          <footer className="shrink-0 border-t border-ink/10 bg-cream px-6 pb-6 pt-5">
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
-                Subtotal
-              </span>
-              <span className="text-xl font-semibold tabular-nums text-forest-deep">
-                {formatPrice(subtotal(items))}
-                {hasPendingPrice(items) && "*"}
-              </span>
-            </div>
-            <div className="mt-1 flex items-baseline justify-between gap-3">
-              <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
-                {count} {count === 1 ? "unidad" : "unidades"}
-              </span>
-              <button
-                type="button"
-                onClick={clear}
-                className="text-xs font-medium text-ink/45 underline decoration-1 underline-offset-4 transition-colors hover:text-jamaica focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest"
-              >
-                Vaciar pedido
-              </button>
-            </div>
-
-            {/* ── Modo de entrega ────────────────────────────────────────
-                Radio group nativo: navegable con flechas y anunciado como
-                grupo por el lector de pantalla sin JS de accesibilidad propio.
-                Las opciones salen de `deliveryMethods` (lib/site.ts). */}
-            <fieldset className="mt-4">
-              <legend className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink/50">
-                ¿Cómo querés recibirlo?
-              </legend>
-              <div className="mt-2.5 flex flex-col gap-2">
-                {deliveryMethods.map((method) => {
-                  const selected = delivery === method.id;
-                  return (
-                    <label
-                      key={method.id}
-                      className={`flex cursor-pointer items-center gap-3 border px-3.5 py-2.5 transition-colors ${
-                        selected
-                          ? "border-forest bg-forest/[0.05]"
-                          : "border-ink/15 hover:border-forest/40"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="delivery-method"
-                        value={method.id}
-                        checked={selected}
-                        onChange={() => setDelivery(method.id)}
-                        className="h-4 w-4 shrink-0 accent-forest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest"
-                      />
-                      <span className="flex min-w-0 flex-col">
-                        <span className="text-sm font-medium leading-tight text-forest-deep">
-                          {method.label}
-                        </span>
-                        {method.note && (
-                          <span className="mt-0.5 text-xs text-ink/50">
-                            {method.note}
-                          </span>
-                        )}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-
-            <p className="mt-3 text-xs leading-relaxed text-ink/55">
-              El subtotal no incluye envío. Te confirmamos el total con envío y la
-              disponibilidad por WhatsApp.
-              {hasPendingPrice(items) &&
-                " Los ítems con * tienen precio a confirmar."}
-            </p>
-
-            {/* Mismo lenguaje que ButtonLink (variant primary), como <button>:
-                el envío es una acción, no una navegación a una URL fija.
-                Bloqueado hasta elegir modo de entrega — el texto de abajo
-                explica por qué, no queda un botón muerto sin feedback. */}
-            <button
-              type="button"
-              onClick={() => delivery && checkout.submit(items, delivery)}
-              disabled={!delivery}
-              aria-describedby={!delivery ? "delivery-hint" : undefined}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-forest-deep hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest disabled:pointer-events-none disabled:bg-forest/40 disabled:shadow-none"
-            >
-              {checkout.id === "whatsapp" && <WhatsAppIcon className="h-4 w-4" />}
-              {checkout.ctaLabel}
-            </button>
-
-            {!delivery && (
-              <p
-                id="delivery-hint"
-                className="mt-2 text-center text-xs text-ink/55"
-              >
-                Elegí cómo querés recibir el pedido para continuar.
-              </p>
-            )}
-          </footer>
+          <CartBasketStep
+            onContinue={goToCheckout}
+            continueButtonRef={continueButtonRef}
+          />
         )}
       </div>
     </dialog>

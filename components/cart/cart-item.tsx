@@ -51,10 +51,10 @@ export function CartItem({ item }: { item: CheckoutItem }) {
   return (
     <li
       style={{ ["--accent" as string]: accent }}
-      className="relative flex gap-4 border-b border-ink/10 py-4 first:pt-0"
+      className="relative flex gap-6 border-b border-ink/10 py-6 first:pt-0"
     >
       {/* Media — foto o placeholder por acento, con la barra del sabor. */}
-      <div className="relative h-24 w-[4.5rem] shrink-0 overflow-hidden bg-cream">
+      <div className="relative h-32 w-24 shrink-0 overflow-hidden bg-cream">
         <span
           aria-hidden="true"
           className="absolute left-0 top-0 z-10 h-full w-1"
@@ -62,14 +62,14 @@ export function CartItem({ item }: { item: CheckoutItem }) {
         />
         <ProductMedia
           product={product}
-          sizes="72px"
+          sizes="96px"
           imageClassName="object-cover object-center"
         />
       </div>
 
       {/* Ficha */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <h3 className="font-display text-lg leading-tight text-forest-deep">
+        <h3 className="font-display text-xl leading-tight text-forest-deep">
           {productLabel(product)}
         </h3>
 

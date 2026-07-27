@@ -13,8 +13,8 @@ import type { Product } from "@/lib/data/products";
 import { products } from "@/lib/data/products";
 import type { CheckoutItem } from "@/lib/checkout";
 import { totalUnits } from "@/lib/checkout";
-import type { DeliveryMethodId } from "@/lib/site";
-import { deliveryMethods } from "@/lib/site";
+import type { ContactInfo, DeliveryMethodId } from "@/lib/site";
+import { deliveryMethods, emptyContactInfo } from "@/lib/site";
 
 /**
  * Estado del pedido — client-side, persistido en localStorage.
@@ -49,17 +49,30 @@ interface State {
   lines: CartLine[];
   /** Modo de entrega elegido; `null` hasta que el usuario elija (bloquea el envío). */
   delivery: DeliveryMethodId | null;
+  /** Datos del pagador, pedidos antes de pagar (ver lib/site.ts). */
+  contact: ContactInfo;
   hydrated: boolean;
 }
 
-const initialState: State = { lines: [], delivery: null, hydrated: false };
+const initialState: State = {
+  lines: [],
+  delivery: null,
+  contact: emptyContactInfo,
+  hydrated: false,
+};
 
 type Action =
-  | { type: "hydrate"; lines: CartLine[]; delivery: DeliveryMethodId | null }
+  | {
+      type: "hydrate";
+      lines: CartLine[];
+      delivery: DeliveryMethodId | null;
+      contact: ContactInfo;
+    }
   | { type: "add"; id: string; qty: number }
   | { type: "setQty"; id: string; qty: number }
   | { type: "remove"; id: string }
   | { type: "setDelivery"; delivery: DeliveryMethodId }
+  | { type: "setContact"; contact: Partial<ContactInfo> }
   | { type: "clear" };
 
 const catalog = new Map(products.map((p) => [p.id, p]));
@@ -92,8 +105,9 @@ function reduceLines(lines: CartLine[], action: Action): CartLine[] {
     case "clear":
       return [];
 
-    // No tocan las líneas: el modo de entrega se resuelve en `reducer`.
+    // No tocan las líneas: el modo de entrega/contacto se resuelven aparte.
     case "setDelivery":
+    case "setContact":
       return lines;
   }
 }
@@ -110,10 +124,18 @@ function reduceDelivery(
   return delivery;
 }
 
+/** Igual que `reduceDelivery`: vaciar el pedido no borra los datos de contacto. */
+function reduceContact(contact: State["contact"], action: Action): State["contact"] {
+  if (action.type === "hydrate") return action.contact;
+  if (action.type === "setContact") return { ...contact, ...action.contact };
+  return contact;
+}
+
 function reducer(state: State, action: Action): State {
   return {
     lines: reduceLines(state.lines, action),
     delivery: reduceDelivery(state.delivery, action),
+    contact: reduceContact(state.contact, action),
     hydrated: state.hydrated || action.type === "hydrate",
   };
 }
@@ -121,6 +143,7 @@ function reducer(state: State, action: Action): State {
 interface StoredCart {
   lines: CartLine[];
   delivery: DeliveryMethodId | null;
+  contact: ContactInfo;
 }
 
 /** Sanea las líneas guardadas. Cualquier entrada corrupta se descarta. */
@@ -135,21 +158,39 @@ function sanitizeLines(value: unknown): CartLine[] {
   });
 }
 
+/** Sanea los datos de contacto guardados. Cualquier campo ausente o con tipo
+ *  incorrecto cae a string vacío — nunca rompe la hidratación. */
+function sanitizeContact(value: unknown): ContactInfo {
+  if (typeof value !== "object" || value === null) return emptyContactInfo;
+  const { firstName, lastName, phone, address } = value as Partial<
+    Record<keyof ContactInfo, unknown>
+  >;
+  return {
+    firstName: typeof firstName === "string" ? firstName : "",
+    lastName: typeof lastName === "string" ? lastName : "",
+    phone: typeof phone === "string" ? phone : "",
+    address: typeof address === "string" ? address : "",
+  };
+}
+
 /**
- * Lee y sanea el pedido guardado (v2: `{ lines, delivery }`). Cualquier dato
+ * Lee y sanea el pedido guardado (v2: `{ lines, delivery }`, con `contact`
+ * agregado después de forma aditiva — un carrito v2 guardado antes de que
+ * existiera simplemente no trae esa clave y sanea a vacío). Cualquier dato
  * corrupto o un formato viejo (v1 era un array plano, bajo otra key) vale como
  * pedido vacío sin entrega elegida.
  */
 function readStorage(): StoredCart {
-  const empty: StoredCart = { lines: [], delivery: null };
+  const empty: StoredCart = { lines: [], delivery: null, contact: emptyContactInfo };
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return empty;
     const parsed: unknown = JSON.parse(raw);
     if (typeof parsed !== "object" || parsed === null) return empty;
-    const { lines, delivery } = parsed as {
+    const { lines, delivery, contact } = parsed as {
       lines?: unknown;
       delivery?: unknown;
+      contact?: unknown;
     };
     return {
       lines: sanitizeLines(lines),
@@ -157,6 +198,7 @@ function readStorage(): StoredCart {
         typeof delivery === "string" && deliveryIds.has(delivery as DeliveryMethodId)
           ? (delivery as DeliveryMethodId)
           : null,
+      contact: sanitizeContact(contact),
     };
   } catch {
     return empty;
@@ -171,6 +213,10 @@ interface CartContextValue {
   /** Modo de entrega elegido; `null` hasta que el usuario elija. */
   delivery: DeliveryMethodId | null;
   setDelivery: (delivery: DeliveryMethodId) => void;
+  /** Datos del pagador (ver lib/site.ts). */
+  contact: ContactInfo;
+  /** Actualiza uno o más campos sin pisar el resto. */
+  setContact: (patch: Partial<ContactInfo>) => void;
   /**
    * `false` hasta leer localStorage. El contador no debe pintar un número
    * antes de esto: el server no conoce el pedido y la hidratación no matchea.
@@ -194,7 +240,7 @@ export function useCart(): CartContextValue {
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [{ lines, delivery, hydrated }, dispatch] = useReducer(
+  const [{ lines, delivery, contact, hydrated }, dispatch] = useReducer(
     reducer,
     initialState,
   );
@@ -204,7 +250,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // localStorage y sembrarlo acá desincronizaría el HTML del server.
   useEffect(() => {
     const stored = readStorage();
-    dispatch({ type: "hydrate", lines: stored.lines, delivery: stored.delivery });
+    dispatch({
+      type: "hydrate",
+      lines: stored.lines,
+      delivery: stored.delivery,
+      contact: stored.contact,
+    });
   }, []);
 
   // Persistir. Guardado por `hydrated`: sin eso, el estado vacío del primer
@@ -212,13 +263,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     try {
-      const payload: StoredCart = { lines, delivery };
+      const payload: StoredCart = { lines, delivery, contact };
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
       // Storage lleno o bloqueado (modo privado): el pedido sigue vivo en
       // memoria, solo no sobrevive al refresh. No hay nada que avisarle al usuario.
     }
-  }, [lines, delivery, hydrated]);
+  }, [lines, delivery, contact, hydrated]);
 
   const add = useCallback(
     (product: Product, qty = 1) => dispatch({ type: "add", id: product.id, qty }),
@@ -231,6 +282,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const remove = useCallback((id: string) => dispatch({ type: "remove", id }), []);
   const setDelivery = useCallback(
     (delivery: DeliveryMethodId) => dispatch({ type: "setDelivery", delivery }),
+    [],
+  );
+  const setContact = useCallback(
+    (patch: Partial<ContactInfo>) => dispatch({ type: "setContact", contact: patch }),
     [],
   );
   const clear = useCallback(() => dispatch({ type: "clear" }), []);
@@ -252,6 +307,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       count: totalUnits(items),
       delivery,
       setDelivery,
+      contact,
+      setContact,
       hydrated,
       add,
       setQty,
@@ -265,6 +322,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       items,
       delivery,
       setDelivery,
+      contact,
+      setContact,
       hydrated,
       add,
       setQty,

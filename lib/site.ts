@@ -36,6 +36,44 @@ export function getDeliveryMethod(id: DeliveryMethodId | null) {
   return deliveryMethods.find((m) => m.id === id);
 }
 
+/**
+ * Datos del pagador, pedidos antes de pagar (los dos métodos, WhatsApp y
+ * PayPal) para poder contactarlo y confirmar la entrega. `address` solo es
+ * obligatoria cuando `delivery === "delivery"` — con retiro en persona no
+ * hace falta dirección.
+ */
+export interface ContactInfo {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+}
+
+export const emptyContactInfo: ContactInfo = {
+  firstName: "",
+  lastName: "",
+  phone: "",
+  address: "",
+};
+
+/**
+ * Validación compartida cliente/servidor: el drawer la usa para habilitar el
+ * CTA de pago, el route handler de PayPal la vuelve a correr server-side
+ * (nunca confía en que el cliente ya validó). Teléfono: al menos 7 dígitos,
+ * sin exigir un formato exacto (los números nicaragüenses se escriben con o
+ * sin código de país, con o sin guion).
+ */
+export function isContactValid(
+  contact: ContactInfo,
+  delivery: DeliveryMethodId | null,
+): boolean {
+  const hasName =
+    contact.firstName.trim().length > 0 && contact.lastName.trim().length > 0;
+  const hasPhone = contact.phone.replace(/\D/g, "").length >= 7;
+  const hasAddress = delivery !== "delivery" || contact.address.trim().length > 0;
+  return hasName && hasPhone && hasAddress;
+}
+
 export const navLinks: { href: string; label: string }[] = [
   { href: "#fermento", label: "Fermento" },
   { href: "#the-ritual", label: "The Ritual" },
