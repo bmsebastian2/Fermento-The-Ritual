@@ -87,15 +87,37 @@ function ShotRow({ product }: { product: Product }) {
             className="object-cover object-bottom"
           />
         </div>
-        {/* Botella — protagonista. Decorativa: deja pasar el click al overlay. */}
-        <ShotBottle
-          color={accent}
-          className="pointer-events-none relative z-10 h-[90%] w-auto max-w-[78%] pt-4 transition-transform duration-500 group-hover:-translate-y-1"
-          style={{
-            filter:
-              "drop-shadow(0 10px 12px color-mix(in srgb, var(--color-forest-deep) 24%, transparent))",
-          }}
-        />
+        {/* Botella — protagonista. Decorativa: deja pasar el click al overlay.
+            Con foto real del frasco (`image`) va la foto; si no, la ilustrada.
+            Ambas comparten el mismo encaje (h-[90%] w-auto, apoyadas en la base)
+            para que las cuatro fichas lean como la misma familia.
+            La foto trae el fondo y la sombra de estudio recortados a alfa: apoya
+            sobre el halo y la acuarela sin recuadro blanco, y recibe la misma
+            sombra CSS que la ilustrada. Nada de `mix-blend-multiply` acá: sobre
+            este árbol no compone. */}
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={`${product.name}: ${product.notes.join(", ")}`}
+            width={510}
+            height={1160}
+            sizes="(max-width: 1024px) 45vw, 22vw"
+            className="pointer-events-none relative z-10 h-[90%] w-auto max-w-[78%] object-contain pt-4 transition-transform duration-500 group-hover:-translate-y-1"
+            style={{
+              filter:
+                "drop-shadow(0 10px 12px color-mix(in srgb, var(--color-forest-deep) 24%, transparent))",
+            }}
+          />
+        ) : (
+          <ShotBottle
+            color={accent}
+            className="pointer-events-none relative z-10 h-[90%] w-auto max-w-[78%] pt-4 transition-transform duration-500 group-hover:-translate-y-1"
+            style={{
+              filter:
+                "drop-shadow(0 10px 12px color-mix(in srgb, var(--color-forest-deep) 24%, transparent))",
+            }}
+          />
+        )}
       </div>
 
       {/* ── Ficha ─────────────────────────────────────────────────────── */}

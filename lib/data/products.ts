@@ -10,8 +10,10 @@
  *           recortada de las tomas reales en /assets/photos, sin texto de lámina).
  *           Kombucha, Kéfir, Cold Brew, Postres y Agua de Coco ya tienen foto.
  *           Lo que quede en `null` cae a placeholder por
- *           color de acento (ver `productImage()` en lib/site.ts). Los Shots usan
- *           su propia botella ilustrada (shots-feature.tsx), no `image`.
+ *           color de acento (ver `productImage()` en lib/site.ts). En los Shots
+ *           `image` decide el render: con foto va la foto, en `null` va la
+ *           botella ilustrada (shots-feature.tsx). Hoy solo Ginger Boost y
+ *           Green Detox tienen foto real del frasco de 2 oz.
  * ACENTO:   cada producto referencia un token de color de globals.css
  *           (var(--color-<accent>)). No mezclar acentos fuera de su card.
  */
@@ -278,20 +280,22 @@ export const products: Product[] = [
     image: "/products/cold-brew-clasico.webp",
     price: null, // TODO: precio real
   },
-  {
-    id: "cold-brew-naranja-miel",
-    categoryId: "cold-brew",
-    line: "fermento",
-    name: "Infusión Naranja y Miel",
-    size: "375 ml",
-    description:
-      "Acidez balanceada. Notas cítricas, miel, semillas de jícaro y cacao.",
-    notes: ["Cítricas", "Miel", "Semillas de jícaro", "Cacao"],
-    badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
-    accent: "cafe",
-    image: "/products/cold-brew-naranja-miel.webp",
-    price: 146.16,
-  },
+  // Retirado temporalmente del catálogo (2026-07-27). Para reactivarlo basta
+  // descomentar: la foto sigue en /public/products/cold-brew-naranja-miel.webp.
+  // {
+  //   id: "cold-brew-naranja-miel",
+  //   categoryId: "cold-brew",
+  //   line: "fermento",
+  //   name: "Infusión Naranja y Miel",
+  //   size: "375 ml",
+  //   description:
+  //     "Acidez balanceada. Notas cítricas, miel, semillas de jícaro y cacao.",
+  //   notes: ["Cítricas", "Miel", "Semillas de jícaro", "Cacao"],
+  //   badges: ["ENERGIZANTE NATURAL", "ARTESANAL"],
+  //   accent: "cafe",
+  //   image: "/products/cold-brew-naranja-miel.webp",
+  //   price: 146.16,
+  // },
 
   // ── Agua de Coco (The Ritual) ────────────────────────────────────────
   {
@@ -345,7 +349,7 @@ export const products: Product[] = [
     ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "jengibre",
-    image: null,
+    image: "/products/shot-ginger-boost-bottle.webp",
     price: 165,
   },
   {
@@ -364,7 +368,7 @@ export const products: Product[] = [
     ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "green",
-    image: null,
+    image: "/products/shot-green-detox-bottle.webp",
     price: 137,
   },
   {

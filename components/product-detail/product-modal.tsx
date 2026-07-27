@@ -93,7 +93,14 @@ export function ProductModal({
           <ProductMedia
             product={product}
             sizes="(max-width: 640px) 100vw, 384px"
-            imageClassName="object-cover object-center"
+            /* El frasco de shot es mucho más vertical que el panel: con
+               `object-cover` quedaría solo la etiqueta. Se muestra entero
+               (la foto ya viene recortada a alfa) sobre el tinte del acento. */
+            imageClassName={
+              product.categoryId === "shots"
+                ? "object-contain object-center p-6"
+                : "object-cover object-center"
+            }
           />
           {product.seasonal && (
             <span
