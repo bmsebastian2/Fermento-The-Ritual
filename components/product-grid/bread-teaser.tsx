@@ -110,12 +110,12 @@ export function BreadTeaser() {
           </ul>
 
           <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <ButtonLink href={whatsappUrl(NOTIFY_MESSAGE)} variant="primary" external>
+            <ButtonLink href={whatsappUrl(NOTIFY_MESSAGE)} variant="outline" external>
               <WhatsAppIcon className="h-4 w-4" />
               Avisame cuando estén
             </ButtonLink>
-            <span className="max-w-[16rem] text-sm italic leading-snug text-ink/55">
-              Ritual es más que pan, es un ritual de bienestar.
+            <span className="max-w-[16rem] text-sm leading-snug text-ink/55">
+              Aún no está a la venta — te avisamos por WhatsApp en cuanto salga.
             </span>
           </div>
         </div>
@@ -132,7 +132,7 @@ export function BreadTeaser() {
             }}
           />
           <div
-            className="overflow-hidden rounded-[4px]"
+            className="relative overflow-hidden rounded-[4px]"
             style={{
               boxShadow:
                 "22px 30px 60px -22px color-mix(in srgb, var(--color-forest-deep) 42%, transparent)",
@@ -146,6 +146,12 @@ export function BreadTeaser() {
               sizes="(max-width: 1024px) 20rem, 24rem"
               className="h-auto w-full object-cover"
             />
+            <span
+              className="absolute left-0 top-3 py-1 pl-3 pr-3 text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-cream"
+              style={{ backgroundColor: accent }}
+            >
+              Aún no disponible
+            </span>
           </div>
         </div>
       </div>
