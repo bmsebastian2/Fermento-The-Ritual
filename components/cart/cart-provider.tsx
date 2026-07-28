@@ -162,12 +162,13 @@ function sanitizeLines(value: unknown): CartLine[] {
  *  incorrecto cae a string vacío — nunca rompe la hidratación. */
 function sanitizeContact(value: unknown): ContactInfo {
   if (typeof value !== "object" || value === null) return emptyContactInfo;
-  const { firstName, lastName, phone, address } = value as Partial<
+  const { firstName, lastName, email, phone, address } = value as Partial<
     Record<keyof ContactInfo, unknown>
   >;
   return {
     firstName: typeof firstName === "string" ? firstName : "",
     lastName: typeof lastName === "string" ? lastName : "",
+    email: typeof email === "string" ? email : "",
     phone: typeof phone === "string" ? phone : "",
     address: typeof address === "string" ? address : "",
   };

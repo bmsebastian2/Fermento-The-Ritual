@@ -9,6 +9,7 @@ const DELIVERY_IDS: readonly DeliveryMethodId[] = ["delivery", "pickup"];
 
 /** Topes de longitud server-side — nunca confiar en que el cliente ya acotó. */
 const NAME_MAX = 60;
+const EMAIL_MAX = 120;
 const PHONE_MAX = 30;
 const ADDRESS_MAX = 140;
 
@@ -64,6 +65,7 @@ export function validateCartPayload(payload: unknown): ValidatedCart | CartValid
   const contact: ContactInfo = {
     firstName: sanitizeText(contactPayload.firstName, NAME_MAX),
     lastName: sanitizeText(contactPayload.lastName, NAME_MAX),
+    email: sanitizeText(contactPayload.email, EMAIL_MAX),
     phone: sanitizeText(contactPayload.phone, PHONE_MAX),
     address: sanitizeText(contactPayload.address, ADDRESS_MAX),
   };

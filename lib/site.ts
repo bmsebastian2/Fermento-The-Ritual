@@ -45,6 +45,7 @@ export function getDeliveryMethod(id: DeliveryMethodId | null) {
 export interface ContactInfo {
   firstName: string;
   lastName: string;
+  email: string;
   phone: string;
   address: string;
 }
@@ -52,9 +53,12 @@ export interface ContactInfo {
 export const emptyContactInfo: ContactInfo = {
   firstName: "",
   lastName: "",
+  email: "",
   phone: "",
   address: "",
 };
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Validación compartida cliente/servidor: el drawer la usa para habilitar el
@@ -69,9 +73,10 @@ export function isContactValid(
 ): boolean {
   const hasName =
     contact.firstName.trim().length > 0 && contact.lastName.trim().length > 0;
+  const hasEmail = EMAIL_PATTERN.test(contact.email.trim());
   const hasPhone = contact.phone.replace(/\D/g, "").length >= 7;
   const hasAddress = delivery !== "delivery" || contact.address.trim().length > 0;
-  return hasName && hasPhone && hasAddress;
+  return hasName && hasEmail && hasPhone && hasAddress;
 }
 
 export const navLinks: { href: string; label: string }[] = [

@@ -46,6 +46,17 @@ export function CartContactFields() {
         </label>
       </div>
       <label className="mt-2 flex flex-col gap-1">
+        <span className={labelClassName}>Email</span>
+        <input
+          type="email"
+          autoComplete="email"
+          required
+          value={contact.email}
+          onChange={(e) => setContact({ email: e.target.value })}
+          className={inputClassName}
+        />
+      </label>
+      <label className="mt-2 flex flex-col gap-1">
         <span className={labelClassName}>Teléfono</span>
         <input
           type="tel"

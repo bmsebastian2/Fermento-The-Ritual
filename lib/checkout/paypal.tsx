@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { FermentoPayPalScriptProvider } from "@/components/checkout/paypal-script-provider";
-import { hasPendingPrice, subtotal } from "./helpers";
+import { hasPendingPrice, productLabel, subtotal } from "./helpers";
 import { cordobaToUsd } from "./rate";
 import type { CheckoutProvider, CheckoutRenderProps } from "./types";
 
@@ -64,8 +64,12 @@ function PayPalCheckoutPanel({
           onApprove={async (data) => {
             setProcessing(true);
             try {
+              const itemsSummary = items
+                .map((item) => `${item.qty}x ${productLabel(item.product)}`)
+                .join(" · ");
               const { ok, data: result } = await postJson("/api/paypal/capture-order", {
                 orderID: data.orderID,
+                order: { contact, delivery, items: itemsSummary, amountUsd: usdAmount },
               });
               if (ok && result.status === "COMPLETED") {
                 onSuccess();
