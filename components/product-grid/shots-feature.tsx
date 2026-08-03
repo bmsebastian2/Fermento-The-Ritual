@@ -102,7 +102,7 @@ function ShotRow({ product }: { product: Product }) {
             width={510}
             height={1160}
             sizes="(max-width: 1024px) 45vw, 22vw"
-            className="pointer-events-none relative z-10 h-[90%] w-auto max-w-[78%] object-contain pt-4 transition-transform duration-500 group-hover:-translate-y-1"
+            className="pointer-events-none relative z-10 h-[90%] w-auto max-w-[98%] object-contain pt-4 transition-transform duration-500 group-hover:-translate-y-1"
             style={{
               filter:
                 "drop-shadow(0 10px 12px color-mix(in srgb, var(--color-forest-deep) 24%, transparent))",

@@ -330,7 +330,7 @@ export const products: Product[] = [
     ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "beet",
-    image: null,
+    image: "/products/shot-red-vitality-bottle.webp",
     price: 165,
   },
   {
@@ -387,7 +387,7 @@ export const products: Product[] = [
     ],
     badges: ["SIN CONSERVANTES", "100% NATURAL"],
     accent: "pina",
-    image: null,
+    image: "/products/shot-tumeric-defense-bottle.webp",
     price: 137,
   },
 
